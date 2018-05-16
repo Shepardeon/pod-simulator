@@ -5,14 +5,14 @@ USE bdd_pod;
 CREATE TABLE IF NOT EXISTS joueurs
 (
     ID_Joueurs              INTEGER     AUTO_INCREMENT 	    NOT NULL		                    COMMENT 'Permet de générer une id pour chaque nouvel utilisateur sur le jeu',
-    Pseudo		            CHAR(20) 		                NOT NULL 		                    COMMENT	'Le nouveau joueur se définit un Pseudo qui permet la reconnexion cette valeur est unique',
-    Pass                    VARCHAR(70)                     NOT NULL                            COMMENT 'Le mot de passe du joueur',
-    Mail 		            CHAR(50) 		                NOT NULL            		        COMMENT 'Permet d\'éditer le profil unique et permet la reconnexion',
+    Pseudo		                CHAR(20) 		                NOT NULL 		                    COMMENT	'Le nouveau joueur se définit un Pseudo qui permet la reconnexion cette valeur est unique',
+    Pass                        VARCHAR(70)                     NOT NULL                            COMMENT 'Le mot de passe du joueur',
+    Mail 		                CHAR(50) 		                NOT NULL            		        COMMENT 'Permet d\'éditer le profil unique et permet la reconnexion',
     Valide 		            BOOLEAN 		                NOT NULL	    DEFAULT FALSE       COMMENT 'Permet de savoir si l\'utilisateur à validé son compte',
-    Chaine_Validation 	    CHAR(10) 		                NOT NULL		                    COMMENT 'Coorespond à la chaine envoyé par mail pour finaliser la création du compte',
+    Chaine_Validation 	        CHAR(10) 		                NOT NULL		                    COMMENT 'Coorespond à la chaine envoyé par mail pour finaliser la création du compte',
     Fonds 		            SMALLINT 		                NOT NULL	    DEFAULT 0           COMMENT 'Ressources du joueur issue de ses différentes attaques, peut être dilapidée par des joueurs adverses',
-    Fonds_Securise 	        SMALLINT 		                NOT NULL    	DEFAULT 0           COMMENT 'Ressources du joueur inviolable par un adversaire, dépend du niveau du joueur',
-    Revenus 		        SMALLINT 		                NOT NULL        DEFAULT 0	        COMMENT 'Gain régulier du joueur',
+    Fonds_Securise 	            SMALLINT 		                NOT NULL    	DEFAULT 0           COMMENT 'Ressources du joueur inviolable par un adversaire, dépend du niveau du joueur',
+    Revenus 		            SMALLINT 		                NOT NULL        DEFAULT 0	        COMMENT 'Gain régulier du joueur',
     Niveau		            SMALLINT		                NOT NULL	    DEFAULT 1           COMMENT 'Niveau du joueur, évolue suivant les attaques du joueur',
     CONSTRAINT 		        pk_ID_Joueurs 	                PRIMARY KEY(ID_Joueurs)             COMMENT 'Clé primaire de l\'identifiant joueur utile pour la table ordinateurs et virus '
 );
