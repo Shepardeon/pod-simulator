@@ -33,7 +33,7 @@ CREATE TABLE IF NOT EXISTS ordinateurs
     Carte_Reseau		    INTEGER 		                NOT NULL	DEFAULT 1           COMMENT 'Niveau de la carte réseau de la machine du joueur',
     Processeur			    INTEGER 		                NOT NULL	DEFAULT 1           COMMENT 'Niveau du processeur de la machine du joueur',
     Disque_Dur			    INTEGER			                NOT NULL	DEFAULT 1           COMMENT 'Niveau de disque dur de la machine du joueur',
-    LOG                         TEXT                            NOT NULL	                    COMMENT 'Fichier texte qui contient les diverses attaques sur la machine',
+    LOG                         TEXT 		                NOT NULL	                    COMMENT 'Fichier texte qui contient les diverses attaques sur la machine',
     CONSTRAINT 			    pk_ID_Ordinateurs                   PRIMARY KEY(ID_Ordinateurs),
     CONSTRAINT 			    fk_ID_Joueurs                       FOREIGN KEY (ID_Joueurs) 	    REFERENCES joueurs (ID_Joueurs)
 );
