@@ -89,3 +89,21 @@ function tprint($tbl){
     print_r($tbl);
     echo "</pre>\n";
 }
+
+/**
+ * Permet de générer une chaine de caractère d'une taille donnée
+ * @param int $l
+ * @return string
+ */
+function randStr($l){
+    $str = "";
+    $listeChars = array_merge(range('A', 'Z'), range('a', 'z'), range('0', '9'));
+    $max = count($listeChars) - 1;
+
+    for($i = 0; $i < $l; $i++){
+        $rand = mt_rand(0, $max);
+        $str .= $listeChars[$rand];
+    }
+
+    return $str;
+}

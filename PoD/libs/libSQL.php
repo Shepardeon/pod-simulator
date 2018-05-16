@@ -6,6 +6,8 @@
  * Il reprend des fonctions de "malibSQL.pdo.php" vu en TP.
  */
 
+include_once("config.php");
+
 
 /**
  * Permet d'exécuter une requête SQL de type Update.
