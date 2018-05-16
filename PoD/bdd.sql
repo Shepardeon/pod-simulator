@@ -47,7 +47,7 @@ CREATE TABLE IF NOT EXISTS virus
     Type_Virus 			    CHAR(3) 		                NOT NULL                                COMMENT 'Permet de nommer le type de virus utilisé',
     Niveau                          SMALLINT     		       NOT NULL	        DEFAULT 1           COMMENT 'Défini les différents types de virus du plus gentil au plus agressif',
     CONSTRAINT 			    pk_ID_Virus		                PRIMARY KEY (ID_Virus),
-    CONSTRAINT 			    fk_ID_Joueurs_Virus  	            FOREIGN KEY(ID_Joueurs) 	        REFERENCES joueurs(ID_Joueurs),
-    CONSTRAINT 			    fk_ID_Ordinateurs 	            FOREIGN KEY(ID_Ordinateurs) 	    REFERENCES ordinateurs(ID_Ordinateurs)
+    CONSTRAINT 			    fk_ID_Joueurs_Virus  	        FOREIGN KEY(ID_Joueurs) 	        REFERENCES joueurs(ID_Joueurs),
+    CONSTRAINT 			    fk_ID_Ordinateurs 	                    FOREIGN KEY(ID_Ordinateurs) 	    REFERENCES ordinateurs(ID_Ordinateurs)
 );
 
