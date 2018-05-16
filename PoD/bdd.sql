@@ -5,7 +5,7 @@ USE bdd_pod;
 CREATE TABLE IF NOT EXISTS joueurs
 (
     ID_Joueurs                      INTEGER     AUTO_INCREMENT 	    NOT NULL		                    COMMENT 'Permet de générer une id pour chaque nouvel utilisateur sur le jeu',
-    Pseudo		                    CHAR(20) 		                NOT NULL 		                    COMMENT	'Le nouveau joueur se définit un Pseudo qui permet la reconnexion cette valeur est unique',
+    Pseudo 		            CHAR(20) 		                NOT NULL 		                    COMMENT	'Le nouveau joueur se définit un Pseudo qui permet la reconnexion cette valeur est unique',
     Pass                            VARCHAR(70)                     NOT NULL                            COMMENT 'Le mot de passe du joueur',
     Mail                            CHAR(50) 		                NOT NULL            		        COMMENT 'Permet d\'éditer le profil unique et permet la reconnexion',
     Valide 		            BOOLEAN 		                NOT NULL	DEFAULT FALSE       COMMENT 'Permet de savoir si l\'utilisateur à validé son compte',
