@@ -19,23 +19,23 @@ CREATE TABLE IF NOT EXISTS joueurs
 
 CREATE TABLE IF NOT EXISTS ordinateurs
 (
-    ID_Ordinateurs 		    INTEGER AUTO_INCREMENT 	    NOT NULL                        COMMENT 'Permet d\'identifier les machines du jeu',
-    IP				    CHAR(10)	                    NOT NULL                        COMMENT 'Adresse IP virtuelle correspondant aux ordinateurs',
-    ID_Joueurs			    INTEGER                 NOT NULL                    	COMMENT 'Identifiant du joueur qui permet de lui affecter une machine',
-    Pare_feu			    INTEGER 		            NOT NULL	DEFAULT 1           COMMENT 'Niveau du pare-feu du joueur',
-    Anti_Virus			    INTEGER 		            NOT NULL	DEFAULT 1           COMMENT 'Niveau de l\'anti-virus du joueur',
-    Porte_Feuille		    INTEGER 		            NOT NULL	DEFAULT 1           COMMENT 'Niveau qui permet d\'obtenir plus de revenus',
-    Scanner_Reseau		    INTEGER 		            NOT NULL	DEFAULT 1           COMMENT 'Fonction du jeu',
-    FW_Cracker			    INTEGER 		            NOT NULL	DEFAULT 1           COMMENT 'Fonction du jeu',
-    SW_Cracker 			    INTEGER 		            NOT NULL	DEFAULT 1           COMMENT 'Fonction du jeu',
+    ID_Ordinateurs 		    INTEGER AUTO_INCREMENT 	        NOT NULL                        COMMENT 'Permet d\'identifier les machines du jeu',
+    IP				    CHAR(10)	                        NOT NULL                        COMMENT 'Adresse IP virtuelle correspondant aux ordinateurs',
+    ID_Joueurs			    INTEGER                         NOT NULL                    	COMMENT 'Identifiant du joueur qui permet de lui affecter une machine',
+    Pare_feu			    INTEGER 		                NOT NULL	DEFAULT 1           COMMENT 'Niveau du pare-feu du joueur',
+    Anti_Virus			    INTEGER 		                NOT NULL	DEFAULT 1           COMMENT 'Niveau de l\'anti-virus du joueur',
+    Porte_Feuille		    INTEGER 		                NOT NULL	DEFAULT 1           COMMENT 'Niveau qui permet d\'obtenir plus de revenus',
+    Scanner_Reseau		    INTEGER 		                NOT NULL	DEFAULT 1           COMMENT 'Fonction du jeu',
+    FW_Cracker			    INTEGER 		                NOT NULL	DEFAULT 1           COMMENT 'Fonction du jeu',
+    SW_Cracker 			    INTEGER 		                NOT NULL	DEFAULT 1           COMMENT 'Fonction du jeu',
     Generateur_de_Miner		    INTEGER 		            NOT NULL	DEFAULT 1           COMMENT 'Fonction du jeu',
     Generateur_de_Backdoor	    INTEGER 		            NOT NULL	DEFAULT 1           COMMENT 'Fonction du jeu',
-    Carte_Reseau		    INTEGER 		            NOT NULL	DEFAULT 1           COMMENT 'Niveau de la carte réseau de la machine du joueur',
-    Processeur			    INTEGER 		            NOT NULL	DEFAULT 1           COMMENT 'Niveau du processeur de la machine du joueur',
-    Disque_Dur			    INTEGER			            NOT NULL	DEFAULT 1           COMMENT 'Niveau de disque dur de la machine du joueur',
+    Carte_Reseau		    INTEGER 		                NOT NULL	DEFAULT 1           COMMENT 'Niveau de la carte réseau de la machine du joueur',
+    Processeur			    INTEGER 		                NOT NULL	DEFAULT 1           COMMENT 'Niveau du processeur de la machine du joueur',
+    Disque_Dur			    INTEGER			                NOT NULL	DEFAULT 1           COMMENT 'Niveau de disque dur de la machine du joueur',
     LOG                         TEXT 			            NOT NULL	                    COMMENT 'Fichier texte qui contient les diverses attaques sur la machine',
-    CONSTRAINT 			    pk_ID_Ordinateurs	        PRIMARY KEY(ID_Ordinateurs),
-    CONSTRAINT 			    fk_ID_Joueurs           FOREIGN KEY (ID_Joueurs) 	    REFERENCES joueurs (ID_Joueurs)
+    CONSTRAINT 			    pk_ID_Ordinateurs               PRIMARY KEY(ID_Ordinateurs),
+    CONSTRAINT 			    fk_ID_Joueurs                   FOREIGN KEY (ID_Joueurs) 	    REFERENCES joueurs (ID_Joueurs)
 );
 
 
