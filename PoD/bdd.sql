@@ -41,7 +41,7 @@ CREATE TABLE IF NOT EXISTS ordinateurs
 
 CREATE TABLE IF NOT EXISTS virus
 (
-    ID_Virus 			    INTEGER AUTO_INCREMENT          NOT NULL	                        COMMENT 'Permet d\'identifier le virus',
+    ID_Virus 			    INTEGER AUTO_INCREMENT              NOT NULL	                        COMMENT 'Permet d\'identifier le virus',
     ID_Ordinateurs 		    INTEGER 		                NOT NULL	                        COMMENT	'Permet d\'identifier la machine infectée',
     ID_Joueurs 			    INTEGER			                NOT NULL                                COMMENT 'Permet d\'identifier le joueur qui a infecté',
     Type_Virus 			    CHAR(3) 		                NOT NULL                                COMMENT 'Permet de nommer le type de virus utilisé',
