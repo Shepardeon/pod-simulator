@@ -20,7 +20,7 @@ CREATE TABLE IF NOT EXISTS joueurs
 CREATE TABLE IF NOT EXISTS ordinateurs
 (
     ID_Ordinateurs 		    INTEGER AUTO_INCREMENT 	    NOT NULL                        COMMENT 'Permet d\'identifier les machines du jeu',
-    IP				    CHAR(10)	                NOT NULL                        COMMENT 'Adresse IP virtuelle correspondant aux ordinateurs',
+    IP				    CHAR(10)	                    NOT NULL                        COMMENT 'Adresse IP virtuelle correspondant aux ordinateurs',
     ID_Joueurs			    INTEGER     		        NOT NULL                    	COMMENT 'Identifiant du joueur qui permet de lui affecter une machine',
     Pare_feu			    INTEGER 		            NOT NULL	DEFAULT 1           COMMENT 'Niveau du pare-feu du joueur',
     Anti_Virus			    INTEGER 		            NOT NULL	DEFAULT 1           COMMENT 'Niveau de l\'anti-virus du joueur',
