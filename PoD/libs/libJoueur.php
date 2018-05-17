@@ -36,3 +36,38 @@ function inscrireJoueur($login, $password, $mail){
 
     return false;
 }
+
+/**
+ * Fonction qui permet de valider un joueur à partir de sa chaine de caractère.
+ * Renvoie "vrai" si l'utilisateur est validé et "faux" sinon
+ * @param $idUser
+ * @param $chaine
+ * @return bool
+ */
+function validerJoueur($idUser, $chaine){
+    if($chaine === recupererChaine($idUser)){
+        validerUtilisateur($idUser);
+
+        return true;
+    }
+
+    return false;
+}
+
+/**
+ * Fonction qui permet de connecter un joueur et de créer une session
+ * Renvoie "vrai" si la session a été ouverte et "faux" sinon
+ * @param $login
+ * @param $password
+ * @return bool
+ */
+function connecterJoueur($login, $password){
+    if($id = verifierUtilisateur($login, $password)){
+        $_SESSION["id"] = $id;
+        $_SESSION["pseudo"] = $login;
+
+        return true;
+    }
+
+    return false;
+}

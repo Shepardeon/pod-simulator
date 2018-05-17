@@ -46,6 +46,16 @@ function testUtilisateurUnique($login, $mail){
 }
 
 /**
+ * Fonction qui récupère la chaine de caractère de validation du joueur.
+ * @param $idUser
+ * @return bool|false|string
+ */
+function recupererChaine($idUser){
+    $SQL = "SELECT Chaine_Validation FROM joueurs WHERE ID_Joueurs = '$idUser'";
+    return SQLGetChamp($SQL);
+}
+
+/**
  * Permet de rendre un utilisateur en base de données valide.
  * @param int $idUser
  */
