@@ -15,14 +15,34 @@ include_once("libSQL.php");
 /**
  * Fonction permetant d'enregistrer un joueur dans la base de données.
  * On a besoin de son pseudo, mot de passe, mail et de la chaine pour valider.
+ * Elle renvoie l'ID du dernier utilisateur enregistré en BDD.
  * @param $login
  * @param $password
  * @param $mail
  * @param $chaine
+ * @return int|false
  */
 function enregistrerUtilisateur($login, $password, $mail, $chaine){
     $SQL = "INSERT INTO joueurs (Pseudo, Pass, Mail, Chaine_Validation) VALUES ('$login', '$password', '$mail', '$chaine')";
     SQLInsert($SQL);
+
+    $SQL = "SELECT ID_Joueurs FROM joueurs ORDER BY ID_Joueurs DESC LIMIT 1";
+    return SQLGetChamp($SQL);
+}
+
+/**
+ * Fonction permettant de tester si un pseudo ou un mail est déjà utilisé dans la base de données.
+ * Renvoie "vrai" si l'utilisateur n'existe pas et "faux" sinon.
+ * @param $login
+ * @param $mail
+ * @return bool
+ */
+function testUtilisateurUnique($login, $mail){
+    $SQL = "SELECT ID_Joueurs FROM joueurs WHERE Pseudo = '$login' OR Mail = '$mail'";
+
+    if(!SQLGetChamp($SQL))
+        return true;
+    return false;
 }
 
 /**
@@ -39,10 +59,13 @@ function validerUtilisateur($idUser){
  * Elle renvoie "faux" si l'utilisateur n'existe pas
  * @param $login
  * @param $password
+ * @param $valide
  * @return bool|false|string
  */
-function verifierUtilisateur($login, $password){
-    $SQL = "SELECT id FROM joueur WHERE Pseudo = '$login' AND Pass = '$password'";
+function verifierUtilisateur($login, $password, $valide = true){
+    $SQL = "SELECT ID_Joueurs FROM joueur WHERE Pseudo = '$login' AND Pass = '$password'";
+    if($valide)
+        $SQL .= " AND Valide = TRUE";
     return SQLGetChamp($SQL);
 }
 
