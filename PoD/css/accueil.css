@@ -1,0 +1,99 @@
+html, body{
+    height: 100%;
+}
+
+header{
+    background-color: black;
+    color: #FEFEFE;
+    min-height: 500px;
+    padding-top: 150px;
+}
+
+main h2{
+    padding-bottom: 15px;
+}
+
+main h3{
+    padding-bottom: 25px;
+}
+
+main h2>span{
+    border-top: 1.5px solid;
+    padding-top: 8px;
+}
+
+header a{
+    color: #FEFEFE;
+    margin-bottom: 5px;
+}
+
+header a:hover{
+    color: #AAA;
+    text-decoration: none;
+}
+
+a:focus, a:active{
+    outline: none;
+}
+
+main > section{
+    padding-bottom: 50px;
+    max-width: 80%;
+}
+
+footer{
+    padding-top: 25px;
+    background-color: #222230;
+    color: #DDD;
+}
+
+footer.modal{
+    color: #212529;
+}
+
+#Apropos{
+    padding-top: 150px;
+}
+
+#Fin{
+    padding-bottom: 70px;
+}
+
+#pod-args{
+    padding-top: 50px;
+}
+
+#pod-args li{
+    display: relative;
+}
+
+#pod-args li>i{
+    position: absolute;
+    left: 100px;
+    padding-top: 5px;
+}
+
+#pod-args .btn:not(:disabled):not(.disabled){
+    background-color: #28a745;
+    border-color: #28a745;
+    cursor: auto;
+}
+
+
+.pod-titre{
+    margin-bottom: 60px;
+    padding-top: 20px;
+}
+
+.pod-info{
+    display: inline;
+}
+
+.pod-block{
+    display: block;
+    margin: 10px;
+}
+
+.pod-section{
+    margin: auto;
+}

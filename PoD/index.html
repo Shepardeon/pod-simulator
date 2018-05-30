@@ -6,15 +6,195 @@
 
         <!-- Import de Bootstrap sur la page -->
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-
+        <!-- Import de FontAwesome pour les icones -->
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp" crossorigin="anonymous">
+        <link rel="stylesheet" href="css/accueil.css">
 
         <title>PoD Simulator - Accueil</title>
     </head>
     <body>
+        <header class="text-center">
+            <h1 class="pod-titre">P0D - Simulator</h1>
+            <div class="row mx-auto">
+                <div class="col-md-12"><a href="inscription.php" class="btn btn-outline-light">Inscription</a></div>
+                <div class="col-md-12"><a href="connexion.php">J'ai déjà un compte</a></div>
+            </div>
+        </header>
+
+        <main>
+            <section id="Apropos" class="row pod-section">
+                <article class="col-md-6 col-sm-12">
+                    <h2><span>À propos de P0D<span></h2>
+                    <p>
+                        Le Lorem Ipsum est simplement du faux texte employé dans la composition et la mise en page avant impression. 
+                        Le Lorem Ipsum est le faux texte standard de l'imprimerie depuis les années 1500, quand un peintre anonyme assembla 
+                        ensemble des morceaux de texte pour réaliser un livre spécimen de polices de texte. Il n'a pas fait que survivre cinq siècles, 
+                        mais s'est aussi adapté à la bureautique informatique, sans que son contenu n'en soit modifié. Il a été popularisé dans 
+                        les années 1960 grâce à la vente de feuilles Letraset contenant des passages du Lorem Ipsum, et, plus récemment, par son 
+                        inclusion dans des applications de mise en page de texte, comme Aldus PageMaker.
+                    </p>
+                </article>
+
+                <article id="pod-args" class="col-md-6 col-sm-12">
+                    <ul>
+                        <li class="btn btn-success pod-block" data-toggle="tooltip" data-html="true" title="<p style='color: #00ff00;'>Gérez les logiciels et les composants de votre machine</p>">
+                            <i class="fa fa-desktop"></i>
+                            <p class="pod-info">Gérez votre ordinateur</p>
+                        </li>
+
+                        <li class="btn btn-success pod-block" data-toggle="tooltip" data-html="true" title="<p style='color: #00ff00;'>Utilisez vos logiciels pour prendre le contrôle de l'ordinateur des autres joueurs</p>">
+                            <i class="fa fa-skull"></i>
+                            <p class="pod-info">Hackez d'autres joueurs</p>
+                        </li>
+
+                        <li class="btn btn-success pod-block" data-toggle="tooltip" data-html="true" title="<p style='color: #00ff00;'>Collectez des IG2Coins et devenez riches !</p>">
+                            <i class="fa fa-money-bill-wave"></i>
+                            <p class="pod-info">Gagnez de l'argent</p>
+                        </li>
+
+                        <li class="btn btn-success pod-block" data-toggle="tooltip" data-html="true" title="<p style='color: #00ff00;'>Montrez à tous que vous êtes le meilleur hacker ;)</p>">
+                            <i class="fa fa-trophy"></i>
+                            <p class="pod-info">Montez dans le classement</p>
+                        </li>
+                    </ul>
+                </article>
+            </section>
+
+            <section id="FAQ" class="row pod-section">
+                <article class="col-md-12">
+                    <h2><span>FAQ<span></h2>
+                    <div class="row">
+                        <div class="col-md-8 mx-auto">
+                            <a class="btn btn-secondary pod-block" data-toggle="collapse" href="#FAQ1" role="button">Y a-t-il un risque pour mon ordinateur ?</a>
+                            <div class="collapse" id="FAQ1">
+                                <p class="card card-body">Pas du tout, il s'agit d'une simulation dans un monde virtuel.</p>
+                            </div>
+                        </div>
+
+                        <div class="col-md-8 mx-auto">
+                            <a class="btn btn-secondary pod-block" data-toggle="collapse" href="#FAQ2" role="button">Faut-il payer pour pouvoir jouer ?</a>
+                            <div class="collapse" id="FAQ2">
+                                <p class="card card-body">Non, P0D c'est gratuit et ça le restera.</p>
+                            </div>
+                        </div>
+
+                        <div class="col-md-8 mx-auto">
+                            <a class="btn btn-secondary pod-block" data-toggle="collapse" href="#FAQ3" role="button">S'agit-il de véritable hacking ?</a>
+                            <div class="collapse" id="FAQ3">
+                                <p class="card card-body">Absoluement pas. Tout est virtuel, il s'agit après tout d'un simple jeu vidéo.</p>
+                            </div>
+                        </div>
+
+                        <div class="col-md-8 mx-auto">
+                            <a class="btn btn-secondary pod-block" data-toggle="collapse" href="#FAQ4" role="button">Où télécharger le jeu ?</a>
+                            <div class="collapse" id="FAQ4">
+                                <p class="card card-body">Vous ne téléchargez pas le jeu, vous y jouez du début à la fin dans votre navigateur web favoris.</p>
+                            </div>
+                        </div>
+                    </div>
+                </article>
+            </section>
+
+            <section id="Fin" class="row pod-section">
+                <article class="col-md-8 mx-auto text-center">
+                    <h3>Convaincu ?</h3>
+                    <div class="row">
+                        <div class="col-md-6 col-sm-6 text-right">
+                            <a href="inscription.php" class="btn btn-outline-success">Inscription</a>
+                        </div>
+
+                        <div class="col-md-6 col-sm-6 text-left">
+                            <a href="connexion.php" class="btn btn-outline-secondary">Connexion</a>
+                        </div>
+                    </div>
+                </article>
+            </section>
+
+            <!-- Notre modal pour afficher notre politique sur la vie privée -->
+            <div class="modal fade" id="PVP" tabindex="-1" role="dialog">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title">Politique Vie Privée</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+
+                            <div class="modal-body">
+                                    Cras mattis consectetur purus sit amet fermentum. Cras justo odio, dapibus ac facilisis in, egestas eget quam. Morbi leo risus, porta ac consectetur ac, vestibulum at eros.
+
+                                    Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor auctor.
+                                    
+                                    Aenean lacinia bibendum nulla sed consectetur. Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Donec sed odio dui. Donec ullamcorper nulla non metus auctor fringilla.
+                                    
+                                    Cras mattis consectetur purus sit amet fermentum. Cras justo odio, dapibus ac facilisis in, egestas eget quam. Morbi leo risus, porta ac consectetur ac, vestibulum at eros.
+                                    
+                                    Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor auctor.
+                                    
+                                    Aenean lacinia bibendum nulla sed consectetur. Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Donec sed odio dui. Donec ullamcorper nulla non metus auctor fringilla.
+                                    
+                                    Cras mattis consectetur purus sit amet fermentum. Cras justo odio, dapibus ac facilisis in, egestas eget quam. Morbi leo risus, porta ac consectetur ac, vestibulum at eros.
+                                    
+                                    Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor auctor.
+                                    
+                                    Aenean lacinia bibendum nulla sed consectetur. Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Donec sed odio dui. Donec ullamcorper nulla non metus auctor fringilla.
+                                    
+                                    Cras mattis consectetur purus sit amet fermentum. Cras justo odio, dapibus ac facilisis in, egestas eget quam. Morbi leo risus, porta ac consectetur ac, vestibulum at eros.
+                                    
+                                    Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor auctor.
+                                    
+                                    Aenean lacinia bibendum nulla sed consectetur. Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Donec sed odio dui. Donec ullamcorper nulla non metus auctor fringilla.
+                                    
+                                    Cras mattis consectetur purus sit amet fermentum. Cras justo odio, dapibus ac facilisis in, egestas eget quam. Morbi leo risus, porta ac consectetur ac, vestibulum at eros.
+                                    
+                                    Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor auctor.
+                                    
+                                    Aenean lacinia bibendum nulla sed consectetur. Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Donec sed odio dui. Donec ullamcorper nulla non metus auctor fringilla.
+                                    
+                                    Cras mattis consectetur purus sit amet fermentum. Cras justo odio, dapibus ac facilisis in, egestas eget quam. Morbi leo risus, porta ac consectetur ac, vestibulum at eros.
+                                    
+                                    Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor auctor.
+                                    
+                                    Aenean lacinia bibendum nulla sed consectetur. Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Donec sed odio dui. Donec ullamcorper nulla non metus auctor fringilla.
+                            </div>
+
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-primary" data-dismiss="modal">Fermer</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+        </main>
+
+        <footer class="row mx-auto" style="position:relative;">
+            <div class="col-md-4">
+                <h4>Plus d'informtions</h4>
+                <ul>
+                    <span class="pod-block"><a data-toggle="modal" href="#PVP">Notre Politique sur la Vie Privée</a></span>
+                    <span class="pod-block"><a href="mailto:thomas.de-maen@ig2i.centralelille.fr">Nous contacter</a></span>
+                </ul>
+            </div>
+
+            <div class="col-md-4 text-center">
+                <h4>Notice</h4>
+                <p>P0D est un jeu vidéo. Il ne s'associe en rien et ne cautionne pas les délits informatiques.</p>
+            </div>
+
+            <div class="col-md-4" style="position:absolute; bottom:0; right:20px;">
+                <p class="text-right align-bottom">P0D © Copyright 2018, tous droits réservés</p>
+            </div>
+        </footer>
 
         <!-- Import des librairies JS pour Bootstrap -->
         <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+        <script type="text/javascript">
+            // Fonction JQuery pour activer les tooltips
+            $(function(){
+                $("body").tooltip({ selector: '[data-toggle=tooltip]' });
+            });
+        </script>
     </body>
 </html>
