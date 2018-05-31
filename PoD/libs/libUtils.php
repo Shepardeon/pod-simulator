@@ -119,16 +119,22 @@ function envoyerMailInscripion($login, $mail, $link){
 
     $message = "<h1>PoD Simulator - Inscription</h1>
                 <p>Bonjour $login, vous venez de vous inscrire sur PoD !</p>
-                <p>Merci de confirmer votre inscription en cliquant sur ce lien : <a>$link</a></p>";
+                <p>Merci de confirmer votre inscription en cliquant sur ce lien : <a href='$link'>$link</a></p>";
     $message = wordwrap($message, 70, "\r\n");
 
-    $headers = array(
+    $headers = 'MIME-Version: 1.0' . '\r\n' .
+    'Content-Type: text/html;charset=utf-8' . '\r\n' .
+    'From: thomas.de-maen@ig2i.centralelille.fr' . '\r\n' .
+    'Reply-To: thomas.de-maen@ig2i.centralelille.fr' . '\r\n' .
+    'X-Mailer PHP/' . phpversion();
+
+    /*$headers = array(
         'MIME-Version' => '1.0',
         'Content-Type' => 'text/html;charset=utf-8',
         'From' => 'thomas.de-maen@ig2i.centralelille.fr',
         'Reply-To' => 'thomas.de-maen@ig2i.centralelille.fr',
         'X-Mailer' => 'PHP/' . phpversion()
-    );
+    );*/
 
     if(!mail($mail, $subject, $message, $headers))
         echo "[ERREUR] - Problème pour envoyer le mail";

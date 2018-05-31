@@ -63,11 +63,22 @@ function validerJoueur($idUser, $chaine){
  */
 function connecterJoueur($login, $password){
     if($id = verifierUtilisateur($login, $password)){
+        $_SESSION["connecte"] = true;
         $_SESSION["id"] = $id;
         $_SESSION["pseudo"] = $login;
 
         return true;
     }
 
+    return false;
+}
+
+/**
+ * Fonction qui renvoie vrai si l'utilisateur local est connecté et faux sinon
+ * @return bool
+ */
+function isOnlineJoueur(){
+    if(valider("connecte"))
+        return true;
     return false;
 }
