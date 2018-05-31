@@ -13,6 +13,7 @@ if($action = valider("action")){
 
         /* On inscrit un nouvel utilisateur dans la base de données */
         case "inscription":
+                echo "pas de pb.";
                 if($login = valider("login") && $pass = valider("pass") && $mail = valider("mail")){
                     inscrireJoueur($login, $pass, $mail);
                 }
