@@ -13,15 +13,19 @@ if($action = valider("action")){
 
         /* On inscrit un nouvel utilisateur dans la base de données */
         case "inscription":
-                echo "pas de pb.";
-                if($login = valider("login") && $pass = valider("pass") && $mail = valider("mail")){
+                if($login = valider("login", "POST"))
+                if($pass = valider("pass", "POST"))
+                if($mail = valider("mail", "POST"))
+                {
                     inscrireJoueur($login, $pass, $mail);
                 }
         break;
 
         /* On valide un nouvel utilisateur ici */
         case "valider":
-                if($id = valider("id") && $chaine = valider("chaine")){
+                if($id = valider("id"))
+                if($chaine = valider("chaine"))
+                {
                     validerJoueur($id, $chaine);
                     //TODO : Création de l'ordinateur
                 }
@@ -29,7 +33,9 @@ if($action = valider("action")){
 
         /* On connecte l'utilisateur et on créer sa session */
         case "connexion":
-                if($login = valider("login") && $pass = valider("pass")){
+                if($login = valider("login"))
+                if($pass = valider("pass"))
+                {
                     if(connecterJoueur($login, $pass)){
                         if($remember = valider("remember")){
                             setcookie("login", $login, time()+60*60*24*30);

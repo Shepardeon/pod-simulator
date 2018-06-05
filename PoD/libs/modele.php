@@ -60,7 +60,7 @@ function recupererChaine($idUser){
  * @param int $idUser
  */
 function validerUtilisateur($idUser){
-    $SQL = "UPDATE joueurs SET Valide = TRUE WHERE ID_Joueur = '$idUser'";
+    $SQL = "UPDATE joueurs SET Valide = TRUE WHERE ID_Joueurs = '$idUser'";
     SQLUpdate($SQL);
 }
 

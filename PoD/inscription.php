@@ -11,7 +11,7 @@ session_start();
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
         <!-- Import de FontAwesome pour les icones -->
         <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp" crossorigin="anonymous">
-        
+        <link rel="stylesheet" href="css/form.css">
         <title>PoD Simulator - Inscription</title>
     </head>
 
@@ -52,8 +52,9 @@ session_start();
                     <label class="form-check-label" for="check">Cochez-moi</label>
                 </div>
 
-                <button type="submit" name="action" value="inscription" class="btn btn-primary">Envoyer</button>
+                <button type="submit" name="action" value="inscription" class="btn btn-primary">Inscription</button>
             </form>
+            <a href="connexion.php">J'ai déjà un compte</a>
         </main>
 
         <footer class="row mx-auto fixed-bottom" style="background-color:#212529;">
