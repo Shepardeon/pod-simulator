@@ -1,0 +1,28 @@
+.row{
+    max-width: 100%;
+}
+
+.sidenav{
+    background-color: #6c757d;
+    min-height: 100%;
+}
+
+.sidenav a{
+    display: block;
+    font-size: 1.20em;
+    margin: 5px;
+}
+
+.sidenav-cat{
+    margin-bottom: 30px;
+}
+
+.sideTitle{
+    color: white;
+    padding: 15px 0 30px 15px;
+}
+
+.side-underline{
+    padding-bottom: 10px;
+    border-bottom: 2px solid white;
+}

@@ -7,10 +7,6 @@ include_once("libs/libJoueur.php");
 // On reçoit une action sur notre contrôleur
 if($action = valider("action")){
     switch($action){
-
-        //TODO: Un système de messages d'informations / erreurs
-        //TODO: Un système de redirection
-
         /* On inscrit un nouvel utilisateur dans la base de données */
         case "inscription":
                 if($login = valider("login", "POST"))

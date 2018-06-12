@@ -57,7 +57,7 @@ function recupererChaine($idUser){
  * @param int $idUser
  */
 function validerUtilisateur($idUser){
-    $SQL = "UPDATE joueurs SET Valide = TRUE WHERE ID_Joueurs = '$idUser'";
+    $SQL = "UPDATE joueurs SET Valide = 1 WHERE ID_Joueurs = '$idUser'";
     SQLUpdate($SQL);
 }
 
@@ -72,7 +72,7 @@ function validerUtilisateur($idUser){
 function verifierUtilisateur($login, $password, $valide = true){
     $SQL = "SELECT ID_Joueurs FROM joueurs WHERE Pseudo = '$login' AND Pass = '$password'";
     if($valide)
-        $SQL .= " AND Valide = TRUE";
+        $SQL .= " AND Valide = 1";
     return SQLGetChamp($SQL);
 }
 
@@ -82,14 +82,23 @@ function verifierUtilisateur($login, $password, $valide = true){
  * @param string $ordre
  * @return array
  */
-function listerUtilisateurs($ordre="ASC"){
-    $SQL = "SELECT Pseudo, Niveau FROM joueurs WHERE Valide = TRUE ORDER BY Niveau";
+function listerUtilisateurs($ordre="ASC", $limite=50){
+    $SQL = "SELECT Pseudo, Niveau FROM joueurs WHERE Valide = 1 ORDER BY Niveau";
 
     if($ordre === "DESC")
         $SQL .= " DESC";
-    $SQL .= " LIMIT 50";
+    $SQL .= " LIMIT $limite";
 
     return parcoursRS(SQLSelect($SQL));
+}
+
+/**
+ * Fonction qui récupère les fonds actuels d'un joueur
+ * @param $idUser
+ */
+function recupFonds($idUser){
+    $SQL = "SELECT Fonds + Fonds_Securise FROM joueurs WHERE ID_Joueurs = '$idUser'";
+    return SQLGetChamp($SQL);
 }
 
 /**

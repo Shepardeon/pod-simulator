@@ -85,3 +85,12 @@ function isOnlineJoueur(){
         return true;
     return false;
 }
+
+/**
+ * Fonction qui affiche les fonds d'un joueur
+ * @param $id 
+ */
+function afficherFonds($id){
+    $fonds = recupFonds($id);
+    echo "$fonds I2C";
+}
