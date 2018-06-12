@@ -137,3 +137,34 @@ function envoyerMailInscripion($login, $mail, $link){
     if(!mail($mail, $subject, $message, $headers))
         return false;
 }
+
+/**
+ * Fonction qui permet de rediriger l'utilisateur avant d'accéder à une page
+ * Nécessite d'être utilisée avant du code HTML.
+ * @param $path
+ */
+function rediriger($path){
+    header("Location: $path");
+}
+
+/**
+ * Fonction qui enregistre en session un message pour l'utilisateur
+ * @param $type
+ * @param $message
+ */
+function enregistrerMessage($message, $type="success"){
+    $_SESSION["msgType"] = $type;
+    $_SESSION["msgText"] = $message;
+}
+
+/**
+ * Fonction qui affiche un message enregistré en session s'il existe
+ * puis le supprime
+ */
+function ecrireMessage(){
+    if(($type = valider("msgType", "SESSION")) && ($msg = valider("msgText", "SESSION"))){
+        echo "<div class='alert alert-$type'>$msg</div>";
+        $_SESSION["msgType"] = "";
+        $_SESSION["msgText"] = "";
+    }
+}

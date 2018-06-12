@@ -24,10 +24,7 @@ include_once("libSQL.php");
  */
 function enregistrerUtilisateur($login, $password, $mail, $chaine){
     $SQL = "INSERT INTO joueurs (Pseudo, Pass, Mail, Chaine_Validation) VALUES ('$login', '$password', '$mail', '$chaine')";
-    SQLInsert($SQL);
-
-    $SQL = "SELECT ID_Joueurs FROM joueurs ORDER BY ID_Joueurs DESC LIMIT 1";
-    return SQLGetChamp($SQL);
+    return SQLInsert($SQL);
 }
 
 /**
@@ -73,7 +70,7 @@ function validerUtilisateur($idUser){
  * @return bool|false|string
  */
 function verifierUtilisateur($login, $password, $valide = true){
-    $SQL = "SELECT ID_Joueurs FROM joueur WHERE Pseudo = '$login' AND Pass = '$password'";
+    $SQL = "SELECT ID_Joueurs FROM joueurs WHERE Pseudo = '$login' AND Pass = '$password'";
     if($valide)
         $SQL .= " AND Valide = TRUE";
     return SQLGetChamp($SQL);
@@ -86,7 +83,7 @@ function verifierUtilisateur($login, $password, $valide = true){
  * @return array
  */
 function listerUtilisateurs($ordre="ASC"){
-    $SQL = "SELECT Pseudo, Niveau from joueurs WHERE Valide = TRUE ORDER BY Niveau";
+    $SQL = "SELECT Pseudo, Niveau FROM joueurs WHERE Valide = TRUE ORDER BY Niveau";
 
     if($ordre === "DESC")
         $SQL .= " DESC";
@@ -94,7 +91,6 @@ function listerUtilisateurs($ordre="ASC"){
 
     return parcoursRS(SQLSelect($SQL));
 }
-
 
 /**
  * Liste des fonctions opérant sur les ordinateurs

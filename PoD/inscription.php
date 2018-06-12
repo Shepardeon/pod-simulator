@@ -1,5 +1,10 @@
 <?php
+include_once("libs/libUtils.php");
+
 session_start();
+
+if(valider("connecte", "SESSION"))
+    rediriger("jeu.php");
 ?>
 <!DOCTYPE html>
 <html lang="fr">
@@ -34,6 +39,9 @@ session_start();
         </header>
 
         <main class="container">
+
+            <?php ecrireMessage(); ?>
+
             <form action="controleur.php" method="POST">
                 <div class="form-group">
                     <label for="login">Pseudo</label>

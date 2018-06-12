@@ -19,7 +19,7 @@ function inscrireJoueur($login, $password, $mail){
 
     if(testUtilisateurUnique($login, $mail)){
         // On hash le mot de passe de l'utilisateur
-        $password = password_hash($password, PASSWORD_DEFAULT);
+        $password = sha1($password);
 
         // On génère une chaine de caractères aléatoires.
         $chaine = randStr(10);
@@ -62,6 +62,9 @@ function validerJoueur($idUser, $chaine){
  * @return bool
  */
 function connecterJoueur($login, $password){
+
+    $password = sha1($password);
+
     if($id = verifierUtilisateur($login, $password)){
         $_SESSION["connecte"] = true;
         $_SESSION["id"] = $id;
