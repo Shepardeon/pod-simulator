@@ -3,6 +3,7 @@ session_start();
 
 include_once("libs/libUtils.php");
 include_once("libs/libJoueur.php");
+include_once("libs/libOrdinateur.php");
 
 // On reçoit une action sur notre contrôleur
 if($action = valider("action")){
@@ -29,13 +30,13 @@ if($action = valider("action")){
                     if($chaine = valider("chaine")){
                         if(validerJoueur($id, $chaine)){
                             enregistrerMessage("Votre compte est <b>actif</b> ! Vous pouvez à présent vous <b>connecter</b>.");
+                            creerOrdinateur($id);
                             rediriger("connexion.php");
                         }
                         else{
-                            enregistrerMessage("Une erreur est survenue lors de l'étape de validation, vérifiez le lien de validation.", "danger");
+                            enregistrerMessage("Votre compte est déjà validé.", "danger");
                             rediriger("inscription.php");
                         }
-                        //TODO : Création de l'ordinateur
                     }
                 }
         break;
@@ -46,7 +47,7 @@ if($action = valider("action")){
                     if($pass = valider("pass"))
                     {
                         if(connecterJoueur($login, $pass)){
-                            if($remember = valider("remember")){
+                            if(valider("remember")){
                                 setcookie("login", $login, time()+60*60*24*30);
                                 setcookie("pass", $pass, time()+60*60*24*30);
                                 setcookie("remember", true, time()+60*60*24*30);
@@ -69,6 +70,35 @@ if($action = valider("action")){
         case "deconnexion":
                 session_destroy();
                 rediriger("connexion.php");
+        break;
+
+        /* On édite le fichier de logs d'un ordinateur */
+        case "editLogs":
+                if(($ip = valider("ip", "SESSION")) && ($logs = valider("logs"))){
+                    ecrireLogs($ip, $logs);
+                    enregistrerMessage("Les logs de la machine $ip ont été mis à jour.");
+                    rediriger("jeu.php?view=logs");
+                }
+                else{
+                    enregistrerMessage("Une erreur est survenue lors de l'enregistrement des logs, veuillez rééssayer.", "danger");
+                    rediriger("jeu.php?view=log");
+                }
+        break;
+
+        /* On sécurise des fonds sur notre machine */
+        case "secFonds":
+                if(($id = valider("id", "SESSION")) && ($niv = recupNiveau($id))){
+                    $montant = securiserFonds($id, $niv);
+
+                    if($montant > 0){
+                        enregistrerMessage("Vous avez sécuriser <b>$montant</b> I2C sur votre compte.");
+                        rediriger("jeu.php?view=money");
+                    }
+                    else{
+                        enregistrerMessage("Vous n'avez pas de fonds sécurisable. Augmentez le niveau de votre porte-feuille.", "danger");
+                        rediriger("jeu.php?view=money");
+                    }
+                }
         break;
     }
 }

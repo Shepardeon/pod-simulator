@@ -6,6 +6,7 @@
 
 include_once("modele.php");
 include_once("libUtils.php");
+include_once("libOrdinateur.php");
 
 /**
  * Fonction permettant d'enregistrer un nouveau joueur dans la base de données.
@@ -45,7 +46,7 @@ function inscrireJoueur($login, $password, $mail){
  * @return bool
  */
 function validerJoueur($idUser, $chaine){
-    if($chaine === recupererChaine($idUser)){
+    if($chaine === recupererChaine($idUser) && !testUtilisateurValide($idUser)){
         validerUtilisateur($idUser);
 
         return true;
@@ -69,6 +70,7 @@ function connecterJoueur($login, $password){
         $_SESSION["connecte"] = true;
         $_SESSION["id"] = $id;
         $_SESSION["pseudo"] = $login;
+        $_SESSION["ip"] = recupIPLocal($id);
 
         return true;
     }
@@ -77,13 +79,55 @@ function connecterJoueur($login, $password){
 }
 
 /**
- * Fonction qui renvoie vrai si l'utilisateur local est connecté et faux sinon
- * @return bool
+ * Fonction qui récupère les fonds d'un joueur
+ * @param $id
+ * @return int
  */
-function isOnlineJoueur(){
-    if(valider("connecte"))
-        return true;
-    return false;
+function recupFondsJoueur($id){
+    return recupFonds($id);
+}
+
+/**
+ * Fonction qui récupère les fonds sécurisés d'un joueur
+ * @param $id
+ * @return int
+ */
+function recupFondsSecJoueur($id){
+    return recupFondsSec($id);
+}
+
+/**
+ * Fonction qui permet au joueur de sécuriser des fonds s'il le peut
+ * @param $id
+ * @param $niv
+ * @return int
+ */
+function securiserFonds($id, $niv){
+    $fondsSec = recupFondsSec($id);
+    $fonds = recupFonds($id);
+    $fondsSecMax = 1000*$niv - $fondsSec;
+
+    if($fonds - $fondsSecMax >= 0){
+        $montant = $fondsSecMax;
+    }else{
+        $montant = $fonds;
+    }
+
+    $fonds -= $montant;
+    $fondsSec += $montant;
+
+    setFonds($id, $fonds);
+    setFonds($id, $fondsSec, "sec");
+
+    return $montant;
+}
+
+/**
+ * Fonction qui récupère le niveau d'un joueur
+ * @param $id
+ */
+function recupNiveau($id){
+    return recupNiveauJoueur($id);
 }
 
 /**
@@ -93,4 +137,31 @@ function isOnlineJoueur(){
 function afficherFonds($id){
     $fonds = recupFonds($id);
     echo "$fonds I2C";
+}
+
+/**
+ * Fonction qui affiche les fonds sécurisés d'un joueur
+ * @param $id 
+ */
+function afficherFondsSec($id){
+    $fonds = recupFondsSec($id);
+    echo "$fonds I2C";
+}
+
+/**
+ * Fonction qui affiche les fonds totaux d'un joueur
+ * @param $id 
+ */
+function afficherFondsTotaux($id){
+    $fonds = recupFondsTotaux($id);
+    echo "$fonds I2C";
+}
+
+/**
+ * Fonction qui affiche le niveau d'un joueur
+ * @param $id
+ */
+function afficherNiveau($id){
+    $niv = recupNiveauJoueur($id);
+    echo "Niveau joueur : $niv";
 }

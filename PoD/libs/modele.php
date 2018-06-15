@@ -77,6 +77,16 @@ function verifierUtilisateur($login, $password, $valide = true){
 }
 
 /**
+ * Fonction qui permet de vérifier si un joueur est valide
+ * @param $idUser
+ * @return bool
+ */
+function testUtilisateurValide($idUser){
+    $SQL = "SELECT Valide FROM joueurs WHERE ID_Joueurs = '$idUser'";
+    return SQLGetChamp($SQL);
+}
+
+/**
  * Fonctions qui permet de lister les 50 premiers utilisateurs et de les classer en fonction de leur niveau de manière croissante
  * ou décroissante au choix
  * @param string $ordre
@@ -95,17 +105,147 @@ function listerUtilisateurs($ordre="ASC", $limite=50){
 /**
  * Fonction qui récupère les fonds actuels d'un joueur
  * @param $idUser
+ * @return int
  */
 function recupFonds($idUser){
+    $SQL = "SELECT Fonds FROM joueurs WHERE ID_Joueurs = '$idUser'";
+    return SQLGetChamp($SQL);
+}
+
+/**
+ * Fonction qui récupère les fonds sécurisés actuels d'un joueur
+ * @param $idUser
+ * @return int
+ */
+function recupFondsSec($idUser){
+    $SQL = "SELECT Fonds_Securise FROM joueurs WHERE ID_Joueurs = '$idUser'";
+    return SQLGetChamp($SQL);
+}
+
+/**
+ * Fonction qui récupère les fonds totaux actuels d'un joueur
+ * @param $idUser
+ * @return int
+ */
+function recupFondsTotaux($idUser){
     $SQL = "SELECT Fonds + Fonds_Securise FROM joueurs WHERE ID_Joueurs = '$idUser'";
     return SQLGetChamp($SQL);
+}
+
+/**
+ * Fonction qui permet de renvoyer le niveau du joueur à partir de son appli la plus haute
+ * @param $idUser
+ * @return int
+ */
+function recupNiveauJoueur($idUser){
+    $SQL = "SELECT GREATEST(Pare_feu, Anti_Virus, Porte_Feuille, Scanner_Reseau, FW_Cracker, SW_Cracker, Generateur_de_Miner, Generateur_de_Backdoor, Carte_Reseau, Processeur, Disque_Dur) 
+    FROM ordinateurs WHERE ID_Joueurs = 15";
+
+    return SQLGetChamp($SQL);
+}
+
+/**
+ * Fonction qui permet de définir les fonds d'un joueurs en BDD
+ * @param $id
+ * @param $montant
+ * @param string $type
+ */
+function setFonds($id, $montant, $type="nsec"){
+    if($type == "nsec")
+        $SQL = "UPDATE joueurs SET Fonds = '$montant' WHERE ID_Joueurs = '$id'";
+    else
+    $SQL = "UPDATE joueurs SET Fonds_Securise = '$montant' WHERE ID_Joueurs = '$id'";
+
+    SQLUpdate($SQL);
 }
 
 /**
  * Liste des fonctions opérant sur les ordinateurs
  */
 
+/**
+ * Fonction qui permet d'enregistrer un nouvel ordinateur dans la BDD
+ * Elle renvoie l'ID du dernier ordinateur enregistré
+ * @param $ip
+ * @param $idUser
+ * @return int|bool
+ */
+function enregistrerOrdinateur($ip, $idUser){
+    $SQL = "INSERT INTO ordinateurs (IP, ID_Joueurs, LOG) VALUES('$ip', '$idUser', '====| Début des logs |====')";
+    return SQLInsert($SQL);
+}
 
+/**
+ * Fonction qui permet de savoir si un ordinateur avec une adresse IP existe déjà en BDD
+ * Elle renvoie "vrai" si non et "faux" si oui
+ * @return bool
+ */
+function testIPUnique($ip){
+    $SQL = "SELECT ID_Ordinateurs FROM ordinateurs WHERE IP = '$ip'";
+
+    if(!SQLGetChamp($SQL))
+        return true;
+    return false;
+}
+
+/**
+ * Fonction qui récupère en BDD l'IP de l'utilisateur passé en paramètre
+ * @param $idUser
+ * @return string
+ */
+function recupIPDepuisUtilisateur($idUser){
+    $SQL = "SELECT IP FROM ordinateurs WHERE ID_Joueurs = '$idUser'";
+
+    return SQLGetChamp($SQL);
+}
+
+/**
+ * Fonction qui récupère en BDD l'ID du propriétaire d'un ordinateur
+ */
+function recupProprioDepuisOrdi($ip){
+    $SQL = "SELECT ID_Joueurs FROM ordinateurs WHERE IP = '$ip'";
+    return SQLGetChamp($SQL);
+}
+
+/**
+ * Fonction qui récupère la liste des logiciels d'un ordinateurs en BDD
+ * @param $ip
+ * @return array
+ */
+function listerLogiciels($ip){
+    $SQL = "SELECT Pare_feu, Anti_Virus, Porte_Feuille, Scanner_Reseau, FW_Cracker, SW_Cracker, Generateur_de_Miner, Generateur_de_Backdoor FROM ordinateurs WHERE IP = '$ip'";
+    return parcoursRS(SQLSelect($SQL));
+}
+
+/**
+ * Fonction qui récupère la liste des materiels d'un ordinateurs en BDD
+ * @param $ip
+ * @return array
+ */
+function listerMateriels($ip){
+    $SQL = "SELECT Carte_Reseau, Processeur, Disque_Dur FROM ordinateurs WHERE IP = '$ip'";
+    return parcoursRS(SQLSelect($SQL));
+}
+
+/**
+ * Fonction qui charge le contenu des logs d'un ordinateur
+ * @param $ip
+ * @return string
+ */
+function chargerLogsBDD($ip){
+    $SQL = "SELECT LOG FROM ordinateurs WHERE IP = '$ip'";
+    return SQLGetChamp($SQL);
+}
+
+/**
+ * Fonction qui écrit un texte dans les logs d'un ordinateur
+ * @param $ip
+ * @param $text
+ */
+function ecrireLogsBDD($ip, $text){
+    $SQL = "UPDATE ordinateurs SET LOG = '$text' WHERE IP = '$ip'";
+    SQLUpdate($SQL);
+}
 
 /**
  * Liste des fonctions opérant sur les virus

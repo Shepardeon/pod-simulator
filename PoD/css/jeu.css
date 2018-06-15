@@ -4,7 +4,7 @@
 
 .sidenav{
     background-color: #6c757d;
-    min-height: 100%;
+    min-height: 872px;
 }
 
 .sidenav a{
@@ -13,8 +13,12 @@
     margin: 5px;
 }
 
+.sidenav h3{
+    font-size: 1.1rem;
+}
+
 .sidenav-cat{
-    margin-bottom: 30px;
+    margin-bottom: 15px;
 }
 
 .sideTitle{

@@ -1,6 +1,7 @@
 <?php
 include_once("libs/libUtils.php");
 include_once("libs/libJoueur.php");
+include_once("libs/libOrdinateur.php");
 
 session_start();
 
@@ -9,7 +10,7 @@ if(!valider("connecte", "SESSION"))
 
 $view = valider("view");
 
-if(!$view)
+if(!$view || !file_exists("templates/$view.php"))
     $view = "status";
 
 ?>
@@ -24,7 +25,7 @@ if(!$view)
         <!-- Import de FontAwesome pour les icones -->
         <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp" crossorigin="anonymous">
         <link rel="stylesheet" href="css/jeu.css">
-        <title>PoD Simulator - Connexion</title>
+        <title>PoD Simulator - Jeu</title>
     </head>
 
     <body>
@@ -39,7 +40,7 @@ if(!$view)
                 <div class="collapse navbar-collapse" style="margin-top:10px;">
                     <div class="navbar-nav ml-auto">
                         <p class="nav-item nav-link active"><?php echo valider("pseudo", "SESSION");?></p>
-                        <p class="nav-item nav-link active"><?php afficherFonds(valider("id", "SESSION"));?></p>
+                        <p class="nav-item nav-link active"><?php afficherFondsTotaux(valider("id", "SESSION"));?></p>
                         <a href="controleur.php?action=deconnexion" class="nav-item nav-link">Déconnexion</a>
                     </div>
                 </div>
@@ -50,33 +51,34 @@ if(!$view)
             <div class="row">
                 <aside class="col-md-2 sidenav">
                     <div class="sidenav-cat" id="ordinateur">
-                        <h3 class="sideTitle"><span class="side-underline">Mon Ordinateur</span></h3>
-                        <a href="jeu.php?view=status" class="btn btn-secondary">Status</a>
-                        <a href="jeu.php?view=log" class="btn btn-secondary">Log</a>
-                        <a href="jeu.php?view=antivirus" class="btn btn-secondary">Antivirus</a>
-                        <a href="jeu.php?view=telechargement" class="btn btn-secondary">Téléchargement</a>
-                        <a href="jeu.php?view=money" class="btn btn-secondary">Porte-feuille</a>
+                        <h3 class="sideTitle"><span class="side-underline">Mon Ordinateur (<?php echo valider("ip", "SESSION"); ?>)</span></h3>
+                        <a href="jeu.php?view=status" class="btn btn-secondary <?php if($view == 'status') echo 'active' ?>">Status</a>
+                        <a href="jeu.php?view=logs" class="btn btn-secondary <?php if($view == 'logs') echo 'active' ?>">Logs</a>
+                        <a href="jeu.php?view=antivirus" class="btn btn-secondary <?php if($view == 'antivirus') echo 'active' ?>">Antivirus</a>
+                        <a href="jeu.php?view=telechargement" class="btn btn-secondary <?php if($view == 'telechargement') echo 'active' ?>">Téléchargement</a>
+                        <a href="jeu.php?view=money" class="btn btn-secondary <?php if($view == 'money') echo 'active' ?>">Porte-feuille</a>
                     </div>
 
                     <div class="sidenav-cat" id="internet">
                         <h3 class="sideTitle"><span class="side-underline">Internet</span></h3>
-                        <a href="jeu.php?view=scanner" class="btn btn-secondary">Scanner</a>
-                        <a href="jeu.php?view=attaque" class="btn btn-secondary">Attaque</a>
-                        <a href="jeu.php?view=bdd" class="btn btn-secondary">BDD Hacker</a>
-                        <a href="jeu.php?view=classement" class="btn btn-secondary">Classement</a>
+                        <a href="jeu.php?view=scanner" class="btn btn-secondary <?php if($view == 'scanner') echo 'active' ?>">Scanner</a>
+                        <a href="jeu.php?view=attaque" class="btn btn-secondary <?php if($view == 'attaque') echo 'active' ?>">Attaque</a>
+                        <a href="jeu.php?view=bdd" class="btn btn-secondary <?php if($view == 'bdd') echo 'active' ?>">BDD Hacker</a>
+                        <a href="jeu.php?view=classement" class="btn btn-secondary <?php if($view == 'classement') echo 'active' ?>">Classement</a>
                     </div>
 
                     <div class="sidenav-cat" id="magasin">
                         <h3 class="sideTitle"><span class="side-underline">Magasin</span></h3>
-                        <a href="jeu.php?view=logiciels" class="btn btn-secondary">Logiciels</a>
-                        <a href="jeu.php?view=materiels" class="btn btn-secondary">Materiels</a>
+                        <a href="jeu.php?view=logiciels" class="btn btn-secondary <?php if($view == 'logiciels') echo 'active' ?>">Logiciels</a>
+                        <a href="jeu.php?view=materiels" class="btn btn-secondary <?php if($view == 'materiels') echo 'active' ?>">Materiels</a>
                     </div>
                 </aside>
 
                 <section class="col-md-10" id="jeu">
                     <?php
-                        if(file_exists("templates/$view.php"))
-                            include("templates/$view.php");
+                        ecrireMessage();
+                        include("templates/$view.php");
+            
                     ?>
                 </section>
             </div>        

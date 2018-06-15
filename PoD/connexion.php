@@ -41,19 +41,29 @@ if(valider("connecte", "SESSION"))
 
         <main class="container">
 
-            <?php ecrireMessage(); ?>
+            <?php 
+                ecrireMessage(); 
+                
+                if(($login = valider("login", "COOKIE")) && ($pass = valider("pass", "COOKIE")))
+                    $remember = "checked";
+                else{
+                    $login = "";
+                    $pass = "";
+                    $remember = "";
+                }
+            ?>
 
             <form action="controleur.php" method="POST">
                 <div class="form-group">
                     <label for="login">Pseudo</label>
-                    <input type="text" class="form-control" id="login" name="login" placeholder="Entrez pseudo" required>
+                    <input type="text" class="form-control" id="login" name="login" placeholder="Entrez pseudo" value="<?php echo $login; ?>" required>
                 </div>
                 <div class="form-group">
                     <label for="pass">Mot de passe</label>
-                    <input type="password" class="form-control" id="pass" name="pass" placeholder="******" required>
+                    <input type="password" class="form-control" id="pass" name="pass" placeholder="******" value="<?php echo $pass; ?>" required>
                 </div>
                 <div class="form-group form-check">
-                    <input type="checkbox" class="form-check-input" id="remember" name="remember">
+                    <input type="checkbox" class="form-check-input" id="remember" name="remember" value="Yes" <?php echo $remember; ?>>
                     <label class="form-check-label" for="check">Se souvenir de moi</label>
                 </div>
 

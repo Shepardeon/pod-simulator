@@ -40,7 +40,7 @@ if(valider("connecte", "SESSION"))
 
         <main class="container">
 
-            <?php ecrireMessage(); ?>
+            <?php ecrireMessage();?>
 
             <form action="controleur.php" method="POST">
                 <div class="form-group">
