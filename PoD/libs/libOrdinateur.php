@@ -34,9 +34,29 @@ function recupIPLocal($idUser){
 /**
  * Fonction qui renvoie l'id du propriétaire d'une machine
  * @param $ip
+ * @return int
  */
 function recupProprio($ip){
     return recupProprioDepuisOrdi($ip);
+}
+
+/**
+ * Fonction qui renvoie le niveau du logiciel/materiel d'une machine
+ * @param $ip
+ * @param $mat
+ * @return int
+ */
+function recupNiveaMat($ip, $mat){
+    return recupNiveauMatBDD($ip, $mat);
+}
+
+/**
+ * Fonction qui permet d'augmenter le niveau d'un logiciel ou d'un materiel
+ * @param $log
+ * @param $id
+ */
+function augmenterNiveau($log, $id){
+    augmenterNiveauBDD($log, recupIPLocal($id));
 }
 
 /**
@@ -69,7 +89,62 @@ function afficherMateriels($ip){
     echo "<ul>";
     foreach($materiels[0] as $materiel => $niveau){
         $materiel = str_replace("_", " ", $materiel);
-        echo "<li style='padding-bottom: 10px;'><b>$materiel</b> - Niveau $niveau</li>";
+        echo "<li class='row' style='padding-bottom: 10px;'><b>$materiel</b> - Niveau $niveau</li>";
+    }
+    echo "</ul>";
+}
+
+/**
+ * Fonction qui affiche les logiciels en vente dans le magasin
+ * @param $id
+ */
+function afficherLogicielsMagasin($id){
+    $logiciels = listerLogiciels(recupIPLocal($id));
+
+    $prixBase = array(
+        "Pare feu" => 200,
+        "Anti Virus" => 300,
+        "Porte Feuille" => 100,
+        "Scanner Reseau" => 400,
+        "FW Cracker" => 500,
+        "SW Cracker" => 500,
+        "Generateur de Miner" => 250,
+        "Generateur de Backdoor" => 420
+    );
+
+    echo "<ul>";
+    foreach($logiciels[0] as $logiciel => $niveau){
+        $logiciel = str_replace("_", " ", $logiciel);
+        $niveau++;
+        $prix = $prixBase[$logiciel]*$niveau;
+        echo "<li class='row' style='padding-bottom: 15px;'><span class='col-md-8'><b>$logiciel</b> - Niveau $niveau ---> $prix I2C</span>";
+        echo "<a href='controleur.php?action=acheterL&&logiciel=".str_replace(" ", "_", $logiciel)."&&prix=$prix' class='btn btn-outline-success col-md-4'>Acheter</a>";
+        echo "</li>";
+    }
+    echo "</ul>";
+}
+
+/**
+ * Fonction qui affiche les materiels en vente dans le magasin
+ * @param $id
+ */
+function afficherMaterielsMagasin($id){
+    $materiels = listerMateriels(recupIPLocal($id));
+
+    $prixBase = array(
+        "Carte Reseau" => 200,
+        "Processeur" => 300,
+        "Disque Dur" => 100
+    );
+
+    echo "<ul>";
+    foreach($materiels[0] as $materiel => $niveau){
+        $materiel = str_replace("_", " ", $materiel);
+        $niveau++;
+        $prix = $prixBase[$materiel]*$niveau;
+        echo "<li class='row' style='padding-bottom: 15px;'><span class='col-md-8'><b>$materiel</b> - Niveau $niveau ---> $prix I2C</span>";
+        echo "<a href='controleur.php?action=acheterM&&mat=".str_replace(" ", "_", $materiel)."&&prix=$prix' class='btn btn-outline-success col-md-4'>Acheter</a>";
+        echo "</li>";
     }
     echo "</ul>";
 }

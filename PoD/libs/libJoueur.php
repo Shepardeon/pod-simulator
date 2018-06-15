@@ -123,11 +123,46 @@ function securiserFonds($id, $niv){
 }
 
 /**
+ * Fonction qui gère l'achat d'un logiciel/matériel en fonction de son prix
+ * Renvoie "vrai" si l'achat s'est effectué et "faux" sinon
+ * @param $id
+ * @param $prix
+ * @return bool
+ */
+function acheter($id, $prix){
+    $fondsSec = recupFondsSec($id);
+    $fonds = recupFonds($id);
+
+    if($fonds+$fondsSec - $prix >= 0){
+        // On a assez d'argent
+        if($fonds - $prix >= 0)
+            setFonds($id, $fonds - $prix);
+        else{
+            $prix -= $fonds;
+            setFonds($id, 0);
+            setFonds($id, $fondsSec - $prix, "sec");
+        }
+
+        return true;
+    }
+    else
+        return false; // On en a pas assez
+}
+
+/**
  * Fonction qui récupère le niveau d'un joueur
  * @param $id
  */
 function recupNiveau($id){
     return recupNiveauJoueur($id);
+}
+
+/**
+ * Fonction qui définie le niveau d'un joueur en fonction de son niveau actuel
+ * @param $id
+ */
+function setNiveauJoueur($id){
+    setNiveauJoueurBDD($id, recupNiveauJoueur($id));
 }
 
 /**

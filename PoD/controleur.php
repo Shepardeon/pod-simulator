@@ -87,7 +87,7 @@ if($action = valider("action")){
 
         /* On sécurise des fonds sur notre machine */
         case "secFonds":
-                if(($id = valider("id", "SESSION")) && ($niv = recupNiveau($id))){
+                if(($id = valider("id", "SESSION")) && ($niv = recupNiveaMat(recupIPLocal($id), "Porte_Feuille"))){
                     $montant = securiserFonds($id, $niv);
 
                     if($montant > 0){
@@ -95,8 +95,40 @@ if($action = valider("action")){
                         rediriger("jeu.php?view=money");
                     }
                     else{
-                        enregistrerMessage("Vous n'avez pas de fonds sécurisable. Augmentez le niveau de votre porte-feuille.", "danger");
+                        enregistrerMessage("Vous n'avez pas de fonds sécurisable.", "danger");
                         rediriger("jeu.php?view=money");
+                    }
+                }
+        break;
+        
+        /* On achète un nouveau logiciel */
+        case "acheterL":
+                if(($id = valider("id", "SESSION")) && ($logi = valider("logiciel")) && ($prix = valider("prix"))){
+                    if(acheter($id, $prix)){
+                        augmenterNiveau($logi, $id);
+                        setNiveauJoueur($id);
+                        enregistrerMessage("Vous avez acheter un nouveau <b>".str_replace("_", " ", $logi)."</b> pour <b>$prix I2C</b>.");
+                        rediriger("jeu.php?view=logiciels");
+                    }
+                    else{
+                        enregistrerMessage("Vous n'avez pas assez de fonds pour acheter un nouveau <b>".str_replace("_", " ", $logi)."</b>.", "danger");
+                        rediriger("jeu.php?view=logiciels");
+                    }
+                }
+        break;
+
+        /* On achète un nouveau materiel */
+        case "acheterM":
+                if(($id = valider("id", "SESSION")) && ($mat = valider("mat")) && ($prix = valider("prix"))){
+                    if(acheter($id, $prix)){
+                        augmenterNiveau($mat, $id);
+                        setNiveauJoueur($id);
+                        enregistrerMessage("Vous avez acheter un nouveau <b>".str_replace("_", " ", $mat)."</b> pour <b>$prix I2C</b>.");
+                        rediriger("jeu.php?view=materiels");
+                    }
+                    else{
+                        enregistrerMessage("Vous n'avez pas assez de fonds pour acheter un nouveau <b>".str_replace("_", " ", $mat)."</b>.", "danger");
+                        rediriger("jeu.php?view=materiels");
                     }
                 }
         break;

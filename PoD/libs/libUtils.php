@@ -5,6 +5,8 @@
  * Il s'inspire du fichier maLibUtils.php vu en TP
  */
 
+include_once("modele.php");
+
 /**
  * Cette fonction permet de valider une chaine en vérifiant qu'elle est bien définie et non nulle.
  * @param string $nom
@@ -167,4 +169,28 @@ function ecrireMessage(){
         $_SESSION["msgType"] = "";
         $_SESSION["msgText"] = "";
     }
+}
+
+/**
+ * Fonction permettant d'afficher le classement des nb premiers joueurs en fonction de leur niveau
+ * @param $nb
+ */
+function afficherClassement($nb){
+    $joueurs = listerUtilisateurs($nb, "DESC");
+    $rank = 1;
+    $style = "border:1px solid black; padding:10px; font-size:1.05em;";
+
+    echo "<ul style='margin-bottom: 75px;'>";
+    foreach($joueurs as $joueur){
+        foreach($joueur as $key => $value){
+            if($key === "Pseudo" && $rank === 1)
+                echo "<li class='row' style='$style'><span class='col-md-10'><b>$rank</b> - $value</span>";
+            elseif($key === "Pseudo" && $rank !== 1)
+                echo "<li class='row' style='$style border-top:none;'><span class='col-md-10'><b>$rank</b> - $value</span>";
+            else
+                echo "<span class='col-md-2 text-right'>Niveau $value</span></li>";
+        }
+        $rank++;
+    }
+    echo "</ul>";
 }

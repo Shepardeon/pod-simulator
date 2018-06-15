@@ -12,7 +12,7 @@
             <h3>Logiciels</h3>
             <?php afficherLogiciels(valider("ip", "SESSION")); 
                 if(valider("ip", "SESSION") == recupIPLocal(valider("id", "SESSION")))
-                    echo "<a href='jeu.php?view=logiciels' class='btn btn-outline-success'>Améliorer</a>";
+                    echo "<a href='jeu.php?view=logiciels' class='btn btn-outline-success' style='margin-left:25%;'>Améliorer</a>";
             ?>
         </div>
 
@@ -20,7 +20,7 @@
             <h3>Matériels</h3>
             <?php afficherMateriels(valider("ip", "SESSION")); 
                 if(valider("ip", "SESSION") == recupIPLocal(valider("id", "SESSION")))
-                    echo "<a href='jeu.php?view=materiels' class='btn btn-outline-success'>Améliorer</a>";
+                    echo "<a href='jeu.php?view=materiels' class='btn btn-outline-success' style='margin-left:25%;'>Améliorer</a>";
             ?>
         </div>
     </div>

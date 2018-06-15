@@ -87,12 +87,12 @@ function testUtilisateurValide($idUser){
 }
 
 /**
- * Fonctions qui permet de lister les 50 premiers utilisateurs et de les classer en fonction de leur niveau de manière croissante
+ * Fonctions qui permet de lister les X premiers utilisateurs et de les classer en fonction de leur niveau de manière croissante
  * ou décroissante au choix
  * @param string $ordre
  * @return array
  */
-function listerUtilisateurs($ordre="ASC", $limite=50){
+function listerUtilisateurs($limite=50, $ordre="ASC"){
     $SQL = "SELECT Pseudo, Niveau FROM joueurs WHERE Valide = 1 ORDER BY Niveau";
 
     if($ordre === "DESC")
@@ -139,9 +139,14 @@ function recupFondsTotaux($idUser){
  */
 function recupNiveauJoueur($idUser){
     $SQL = "SELECT GREATEST(Pare_feu, Anti_Virus, Porte_Feuille, Scanner_Reseau, FW_Cracker, SW_Cracker, Generateur_de_Miner, Generateur_de_Backdoor, Carte_Reseau, Processeur, Disque_Dur) 
-    FROM ordinateurs WHERE ID_Joueurs = 15";
+    FROM ordinateurs WHERE ID_Joueurs = '$idUser'";
 
     return SQLGetChamp($SQL);
+}
+
+function setNiveauJoueurBDD($idUser, $niv){
+    $SQL = "UPDATE joueurs SET Niveau = '$niv' WHERE ID_Joueurs = '$idUser'";
+    SQLUpdate($SQL);
 }
 
 /**
@@ -245,6 +250,24 @@ function chargerLogsBDD($ip){
 function ecrireLogsBDD($ip, $text){
     $SQL = "UPDATE ordinateurs SET LOG = '$text' WHERE IP = '$ip'";
     SQLUpdate($SQL);
+}
+
+/**
+ * Fonction qui augmente le niveau de +1 dans la base de donnée
+ * @param $col
+ * @param $ip
+ */
+function augmenterNiveauBDD($col, $ip){
+    $SQL = "SELECT $col FROM ordinateurs WHERE IP = '$ip'";
+    $niv = SQLGetChamp($SQL) + 1;
+
+    $SQL = "UPDATE ordinateurs SET $col = '$niv' WHERE IP = '$ip'";
+    SQLUpdate($SQL);
+}
+
+function recupNiveauMatBDD($ip, $col){
+    $SQL = "SELECT $col FROM ordinateurs WHERE IP = '$ip'";
+    return SQLGetChamp($SQL);
 }
 
 /**

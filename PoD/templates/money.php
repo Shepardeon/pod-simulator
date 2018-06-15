@@ -18,10 +18,9 @@
             <h6>Fonds Sécurisés</h6>
             <p><?php afficherFondsSec(recupProprio(valider("ip", "SESSION"))) ?></p>
             <?php 
-                if(valider("ip", "SESSION") != recupIPLocal(valider("id", "SESSION")))
+                if(valider("ip", "SESSION") == recupIPLocal(valider("id", "SESSION")))
                     echo "<a href='controleur.php?action=secFonds' class='btn btn-outline-success'>Sécuriser</a>";
             ?>
-            <a href="controleur.php?action=secFonds" class="btn btn-outline-success">Sécuriser</a>
         </div>
     </div>
 </div>

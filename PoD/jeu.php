@@ -55,8 +55,13 @@ if(!$view || !file_exists("templates/$view.php"))
                         <a href="jeu.php?view=status" class="btn btn-secondary <?php if($view == 'status') echo 'active' ?>">Status</a>
                         <a href="jeu.php?view=logs" class="btn btn-secondary <?php if($view == 'logs') echo 'active' ?>">Logs</a>
                         <a href="jeu.php?view=antivirus" class="btn btn-secondary <?php if($view == 'antivirus') echo 'active' ?>">Antivirus</a>
+                        <?php if(valider("ip", "SESSION") == recupIPLocal(valider("id", "SESSION"))) {?>
                         <a href="jeu.php?view=telechargement" class="btn btn-secondary <?php if($view == 'telechargement') echo 'active' ?>">Téléchargement</a>
+                        <?php } ?>
                         <a href="jeu.php?view=money" class="btn btn-secondary <?php if($view == 'money') echo 'active' ?>">Porte-feuille</a>
+                        <?php if(valider("ip", "SESSION") != recupIPLocal(valider("id", "SESSION"))) 
+                                echo '<a href="#" class="btn btn-secondary">Déconnexion</a>';
+                        ?>
                     </div>
 
                     <div class="sidenav-cat" id="internet">
@@ -67,11 +72,13 @@ if(!$view || !file_exists("templates/$view.php"))
                         <a href="jeu.php?view=classement" class="btn btn-secondary <?php if($view == 'classement') echo 'active' ?>">Classement</a>
                     </div>
 
+                    <?php if(valider("ip", "SESSION") == recupIPLocal(valider("id", "SESSION"))) { ?>
                     <div class="sidenav-cat" id="magasin">
                         <h3 class="sideTitle"><span class="side-underline">Magasin</span></h3>
                         <a href="jeu.php?view=logiciels" class="btn btn-secondary <?php if($view == 'logiciels') echo 'active' ?>">Logiciels</a>
                         <a href="jeu.php?view=materiels" class="btn btn-secondary <?php if($view == 'materiels') echo 'active' ?>">Materiels</a>
                     </div>
+                    <?php } ?>
                 </aside>
 
                 <section class="col-md-10" id="jeu">
