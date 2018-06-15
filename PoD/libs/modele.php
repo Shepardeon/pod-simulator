@@ -8,9 +8,9 @@
 // Inclusion de la librairie pour faciliter les requêtes SQL
 include_once("libSQL.php");
 
-/**
- * Liste des fonctions opérant sur les utilisateurs
- */
+  /////////////////////////////////////////////////////////////////////////////////////////////
+ ////////////////////////////// FONCTIONS DU MODULE UTILISATEUR //////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////
 
 /**
  * Fonction permetant d'enregistrer un joueur dans la base de données.
@@ -164,9 +164,9 @@ function setFonds($id, $montant, $type="nsec"){
     SQLUpdate($SQL);
 }
 
-/**
- * Liste des fonctions opérant sur les ordinateurs
- */
+  ////////////////////////////////////////////////////////////////////////////////////////////
+ ////////////////////////////// FONCTIONS DU MODULE ORDINATEUR //////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////
 
 /**
  * Fonction qui permet d'enregistrer un nouvel ordinateur dans la BDD
@@ -206,6 +206,8 @@ function recupIPDepuisUtilisateur($idUser){
 
 /**
  * Fonction qui récupère en BDD l'ID du propriétaire d'un ordinateur
+ * @param $ip
+ * @return int
  */
 function recupProprioDepuisOrdi($ip){
     $SQL = "SELECT ID_Joueurs FROM ordinateurs WHERE IP = '$ip'";
@@ -265,11 +267,55 @@ function augmenterNiveauBDD($col, $ip){
     SQLUpdate($SQL);
 }
 
+/**
+ * Fonction qui permet de récupérer un niveau d'un logiciel/materiel dans la BDD
+ * @param $ip
+ * @param $col
+ * @return int
+ */
 function recupNiveauMatBDD($ip, $col){
     $SQL = "SELECT $col FROM ordinateurs WHERE IP = '$ip'";
     return SQLGetChamp($SQL);
 }
 
 /**
- * Liste des fonctions opérant sur les virus
+ * Fonction qui permet de renvoyer jusqu'à X IP aléatoirement de la BDD à l'exception de celle passée en paramètre
+ * @param $ip
+ * @param $limit
+ * @return array
  */
+function recupRandomIP($ip, $limit){
+    $SQL = "SELECT IP FROM ordinateurs WHERE IP != '$ip' ORDER BY RAND() LIMIT $limit";
+    return parcoursRs(SQLSelect($SQL));
+}
+
+/********************************************************************************************
+ *                      Les fonctions du sous module téléchargement                         *
+ *******************************************************************************************/
+
+/**
+ * Fonction qui renvoie l'ID d'un ordinateur à partir de son adresse IP
+ * @param $ip
+ * @return int
+ */
+function recupIDOrdiBDD($ip){
+    $SQL = "SELECT ID_Ordinateurs FROM ordinateurs WHERE IP = '$ip'";
+    return SQLGetChamp($SQL);
+}
+
+/**
+ * Fonction qui enregistre un nouveau téléchargement en BDD
+ */
+function ajoutTelechargementBDD($idOrdi, $logi, $niv){
+    $SQL = "INSERT INTO ordinateurs(ID_Ordinateurs, Logiciel, Niveau) VALUES ('$idOrdi', '$logi', '$niv'";
+    return SQLInsert($SQL);
+}
+/*
+function retirerTelechargementBDD($idOrdi, $logi, $niv){
+    $SQL = "DELETE FROM"
+}*/
+
+
+  ///////////////////////////////////////////////////////////////////////////////////////
+ ////////////////////////////// FONCTIONS DU MODULE VIRUS //////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////

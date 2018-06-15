@@ -51,3 +51,13 @@ CREATE TABLE IF NOT EXISTS virus
     CONSTRAINT 			    fk_ID_Ordinateurs                   FOREIGN KEY(ID_Ordinateurs) 	    REFERENCES ordinateurs(ID_Ordinateurs)
 );
 
+CREATE TABLE IF NOT EXISTS telechargements
+(
+    ID                      INTEGER AUTO_INCREMENT              NOT NULL                        COMMENT 'Permet d\'identifier le téléchargement',
+    ID_Ordinateurs          INTEGER                             NOT NULL                        COMMENT 'ID de la machine qui a téléchargé',
+    Logiciel                CHAR(22)                            NOT NULL                        COMMENT 'Le nom du logiciel dans la BDD',
+    Niveau                  INTEGER                             NOT NULL                        COMMENT 'Le niveau du logiciel téléchargé',
+
+    CONSTRAINT              pk_tele                             PRIMARY KEY(ID),
+    CONSTRAINT              fk_ID_Ordi_tele                     FOREIGN KEY(ID_Ordinateurs)     REFERENCES ordinateurs(ID_Ordinateurs)
+);

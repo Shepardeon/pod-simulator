@@ -99,6 +99,23 @@ if($action = valider("action")){
                         rediriger("jeu.php?view=money");
                     }
                 }
+                rediriger("connexion.php");
+        break;
+
+        /* On vole des fonds à un autre joueur */
+        case "volFonds":
+                if(($id = valider("id", "SESSION")) && ($o = recupProprio(valider("ip", "SESSION")))){
+                    if($fonds = volerFonds($id, $o)){
+                        enregistrerMessage("Vous avez transféré <b>$fonds</b> I2C vers la machine <b>".recupIPLocal($id)."</b>.");
+                        ajouterLogs(valider("ip", "SESSION"), "[INFO] - Transfert de $fonds I2C vers " . recupIPLocal($id));
+                        rediriger("jeu.php?view=money");
+                    }
+                    else{
+                        enregistrerMessage("Aucun fonds à transférer.", "danger");
+                        rediriger("jeu.php?view=money");
+                    }
+                }
+                rediriger("connexion.php");
         break;
         
         /* On achète un nouveau logiciel */
@@ -115,6 +132,7 @@ if($action = valider("action")){
                         rediriger("jeu.php?view=logiciels");
                     }
                 }
+                rediriger("connexion.php");
         break;
 
         /* On achète un nouveau materiel */
@@ -131,6 +149,71 @@ if($action = valider("action")){
                         rediriger("jeu.php?view=materiels");
                     }
                 }
+                rediriger("connexion.php");
+        break;
+        
+        /* On scan le réseau en totalité */
+        case "scan":
+                if($id = valider("id", "SESSION")){
+                    $_SESSION["nouveauScan"] = true;
+                    rediriger("jeu.php?view=scanner");
+                }
+                rediriger("connexion.php");
+        break;
+
+        /* On scan un joueur en particulier */
+        case "scanI":
+                if(($id = valider("id", "SESSION")) && ($ip = valider("IP"))){
+                    if(existsIP($ip)){
+                        $_SESSION["nouveauScanI"] = true;
+                        $_SESSION["IScan"] = $ip;
+                        ajouterLogs($ip, "[ALERTE] - Scan intense en provenance de " . valider("ip", "SESSION"));
+                        // TODO : Ajouter une gestion du temps avant de révéler le résultat du scan
+
+                        rediriger("jeu.php?view=scanner");
+                    }
+                    else{
+                        enregistrerMessage("L'adresse IP <b>$ip</b> n'est pas attribuée", "danger");
+                        rediriger("jeu.php?view=scanner");
+                    }
+                }
+                rediriger("connexion.php");
+        break;
+                
+        /* On lance une attaque sur un autre joueur */
+        case "attaquer": // TODO : changer le système d'attaque complètement
+                if(($id = valider("id", "SESSION")) && ($ip = valider("IP"))){
+                    if(existsIP($ip)){
+                        ajouterLogs($ip, "[ALERTE] - Connexion externe en provenance de " . valider("ip", "SESSION"));
+                        enregistrerMessage("Vous vous êtes bien connecté à la machine <b>$ip</b>");
+                        $_SESSION["ip"] = $ip;
+                        rediriger("jeu.php?view=status");
+                    }
+                    else{
+                        enregistrerMessage("L'adresse IP <b>$ip</b> n'est pas attribuée", "danger");
+                        rediriger("jeu.php?view=attaque");
+                    }
+                }
+                rediriger("connexion.php");
+        break;
+
+        /* On tente de se déconnecter de la machine d'un autre joueur */
+        case "stopAttaque":
+                if($id = valider("id", "SESSION")){
+                    $ip = recupIPLocal($id);
+                    $_SESSION["ip"] = $ip;
+                    enregistrerMessage("Vous vous êtes bien connecté à la machine <b>$ip</b>");
+                    rediriger("jeu.php?view=status");
+                }
+                rediriger("connexion.php");
+        break;
+        
+        /* On tente de télécharger un logiciel depuis un autre ordinateur */
+        case "telecharger":
+                if(($id = valider("id", "SESSION")) && ($logi = valider("logi"))){
+                    
+                }
+                rediriger("connexion.php");
         break;
     }
 }

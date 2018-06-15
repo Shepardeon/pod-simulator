@@ -123,6 +123,25 @@ function securiserFonds($id, $niv){
 }
 
 /**
+ * Fonction qui permet de transférer l'intégralités des fonds non sécurisés d'un joueur à l'autre
+ * Renvoie les fonds s'ils ont été transférés et faux sinon
+ * @param $vol
+ * @param $o
+ * @return bool
+ */
+function volerFonds($vol, $o){
+    $fonds = recupFonds($o);
+    
+    if($fonds > 0){
+        setFonds($vol, recupFonds($vol) + $fonds);
+        setFonds($o, 0);
+        return $fonds;
+    }
+
+    return false;
+}
+
+/**
  * Fonction qui gère l'achat d'un logiciel/matériel en fonction de son prix
  * Renvoie "vrai" si l'achat s'est effectué et "faux" sinon
  * @param $id

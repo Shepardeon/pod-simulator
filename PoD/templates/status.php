@@ -4,7 +4,7 @@
 
     <div class="row" style="margin-top: 25px;">
         <h1 class="col-md-8">Status</h1>
-        <span class="col-md-4" style="padding-top:15px;"><?php afficherNiveau(valider("id", "SESSION")); ?></span>
+        <span class="col-md-4" style="padding-top:15px;"><?php afficherNiveau(recupProprioDepuisOrdi(valider("ip", "SESSION"))); ?></span>
     </div>
 
     <div class="row" style="margin-top: 15%">

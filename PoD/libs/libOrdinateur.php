@@ -32,6 +32,17 @@ function recupIPLocal($idUser){
 }
 
 /**
+ * Fonction qui renvoie vrai si une IP existe et faux sinon
+ * @param $ip
+ * @return bool
+ */
+function existsIP($ip){
+    if(recupProprioDepuisOrdi($ip))
+        return true;
+    return false;
+}
+
+/**
  * Fonction qui renvoie l'id du propriétaire d'une machine
  * @param $ip
  * @return int
@@ -71,8 +82,9 @@ function afficherLogiciels($ip){
     foreach($logiciels[0] as $logiciel => $niveau){
         $logiciel = str_replace("_", " ", $logiciel);
         echo "<li class='row' style='padding-bottom: 15px;'><span class='col-md-8'><b>$logiciel</b> - Niveau $niveau</span>";
-            if(valider("ip", "SESSION") != recupIPLocal(valider("id", "SESSION")))
-                echo "<a href='#' class='btn btn-danger col-md-4'>Télécharger</a>";
+            if(valider("ip", "SESSION") != recupIPLocal(valider("id", "SESSION")) 
+            && recupNiveaMat(valider("ip", "SESSION"), str_replace(" ", "_", $logiciel)) > recupNiveaMat(recupIPLocal(valider("id", "SESSION")), str_replace(" ", "_", $logiciel)))
+                echo "<a href='controleur.php?action=telecharger&&logi=".str_replace(" ", "_", $logiciel)."' class='btn btn-danger col-md-4'>Télécharger</a>";
         echo "</li>";
     }
     echo "</ul>";
@@ -165,3 +177,51 @@ function afficherLogs($ip){
 function ecrireLogs($ip, $text){
     ecrireLogsBDD($ip, $text);
 }
+
+/**
+ * Fonction qui permet d'éditer les logs d'un ordinateur en ajoutant une nouvelle ligne
+ * @param $ip
+ * @param $text
+ */
+function ajouterLogs($ip, $text){
+    $logs = chargerLogsBDD($ip);
+    $logs .= "\r\n[". date("H:i", time()) . "] " . $text;
+    ecrireLogsBDD($ip, $logs);
+}
+
+/**
+ * Fonction qui renvoie nb nombre d'IP sauf celle en paramètre
+ * @param $ip
+ * @param int $nb
+ * @return array
+ */
+function randomIP($ip, $nb=3){
+    return recupRandomIP($ip, $nb);
+}
+
+/**
+ * Fonction qui affiche une liste d'IP
+ * @param $ips
+ */
+function afficherRandomIP($ips){
+    echo "<ul>";
+    foreach($ips as $ip)
+        foreach($ip as $k => $v)
+            echo "<li class='row' style='padding-bottom:15px;'><span class='col-md-12'>$v</span></li>";
+    echo "</ul>";
+}
+
+/**
+ * Fonction qui affiche le résultat d'un scan intensif
+ */
+function afficherScanI($ip){
+    $niv = recupNiveaMat($ip, "Pare_feu");
+
+    echo "<h6>Résultat pour <b>$ip</b> :</h6>";
+    echo "<p style='padding-bottom:20px;'>Pare-feu niveau $niv</p>";
+}
+
+  /////////////////////////////////////////////////////////////////////////////////////////////////////
+ ////////////////////////////// FONCTIONS DU SOUS MODULE TELECHARGEMENT //////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////
+

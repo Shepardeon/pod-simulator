@@ -10,7 +10,7 @@
             <p><?php afficherFonds(recupProprio(valider("ip", "SESSION"))) ?></p>
             <?php
                 if(valider("ip", "SESSION") != recupIPLocal(valider("id", "SESSION")))
-                    echo "<a href='#' class='btn btn-outline-danger'>Transférer</a>";
+                    echo "<a href='controleur.php?action=volFonds' class='btn btn-outline-danger'>Transférer</a>";
             ?>
         </div>
 

@@ -60,7 +60,7 @@ if(!$view || !file_exists("templates/$view.php"))
                         <?php } ?>
                         <a href="jeu.php?view=money" class="btn btn-secondary <?php if($view == 'money') echo 'active' ?>">Porte-feuille</a>
                         <?php if(valider("ip", "SESSION") != recupIPLocal(valider("id", "SESSION"))) 
-                                echo '<a href="#" class="btn btn-secondary">Déconnexion</a>';
+                                echo '<a href="controleur.php?action=stopAttaque" class="btn btn-secondary">Déconnexion</a>';
                         ?>
                     </div>
 
