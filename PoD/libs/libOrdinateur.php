@@ -83,7 +83,8 @@ function afficherLogiciels($ip){
         $logiciel = str_replace("_", " ", $logiciel);
         echo "<li class='row' style='padding-bottom: 15px;'><span class='col-md-8'><b>$logiciel</b> - Niveau $niveau</span>";
             if(valider("ip", "SESSION") != recupIPLocal(valider("id", "SESSION")) 
-            && recupNiveaMat(valider("ip", "SESSION"), str_replace(" ", "_", $logiciel)) > recupNiveaMat(recupIPLocal(valider("id", "SESSION")), str_replace(" ", "_", $logiciel)))
+            && recupNiveaMat(valider("ip", "SESSION"), str_replace(" ", "_", $logiciel)) > recupNiveaMat(recupIPLocal(valider("id", "SESSION")), str_replace(" ", "_", $logiciel))
+            && recupNiveaMat(valider("ip", "SESSION"), str_replace(" ", "_", $logiciel)) > logicielTelecharge(recupIPLocal(valider("id", "SESSION")), str_replace(" ", "_", $logiciel)))
                 echo "<a href='controleur.php?action=telecharger&&logi=".str_replace(" ", "_", $logiciel)."' class='btn btn-danger col-md-4'>Télécharger</a>";
         echo "</li>";
     }
@@ -225,3 +226,155 @@ function afficherScanI($ip){
  ////////////////////////////// FONCTIONS DU SOUS MODULE TELECHARGEMENT //////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////
 
+/**
+ * Fonction qui renvoie le niveau du logiciel si celui-ci est téléchargé sur la machine
+ * @param $ip
+ * @param $logi
+ * @return int
+ */
+function logicielTelecharge($ip, $logi){
+    return recupLogiTelechargeBDD(recupIDOrdiBDD($ip), $logi);
+}
+
+/**
+ * Fonction qui permet de supprimer un logiciel de la liste des téléchargements d'un joueur
+ * @param $ip
+ * @param $logi
+ * @param $niv
+ */
+function supprimerLogiciel($ip, $logi, $niv){
+    retirerTelechargementBDD(recupIDOrdiBDD($ip), $logi, $niv);
+}
+
+/**
+ * Fonction qui permet à un joueur de télécharger un logiciel sur son ordinateur
+ * @param $ip
+ * @param $logi
+ * @param $niv
+ */
+function telechargerLogiciel($ip, $logi, $niv){
+    $idOrdi = recupIDOrdiBDD($ip);
+
+    // Avons-nous déjà téléchargé ce logiciel ?
+    if($oldNiv = logicielTelecharge($ip, $logi)){
+        // On retire l'ancien logiciel
+        retirerTelechargementBDD($idOrdi, $logi, $oldNiv);
+        // On ajoute le nouveau
+        ajoutTelechargementBDD($idOrdi, $logi, $niv);
+    }
+    else{
+        // On ajoute simplement le nouveau logiciel téléchargé
+        ajoutTelechargementBDD($idOrdi, $logi, $niv);
+    }
+}
+
+function crackerLogiciel($ip, $logi, $niv){
+    $idOrdi = recupIDOrdiBDD($ip);
+
+    if(logicielTelecharge($ip, $logi)){
+        retirerTelechargementBDD($idOrdi, $logi, $niv);
+        setNiveauMatBDD($ip, $logi, $niv);
+        return true;
+    }
+    return false;
+}
+
+/**
+ * Fonction qui affiche les téléchargements d'une machine donnée
+ * @param $ip
+ */
+function afficherTelechargements($ip){
+    $idOrdi = recupIDOrdiBDD($ip);
+    $telechargements = recupTelechargementsBDD($idOrdi);
+
+    echo "<ul style='max-width:40%; margin-bottom:10%;'>";
+    foreach($telechargements as $telechargement)
+        foreach($telechargement as $k => $v)
+            if($k === "Logiciel"){
+                $logi = $v;
+                echo "<li class='row' style='font-size:1.1em;'><span class='col-md-6'>".str_replace("_", " ", $logi)."</span>";
+            }
+            else{
+                echo "<span class='col-md-6'>Niveau $v</span></li>";
+                echo "<div style='margin:20px auto 15px auto;'><a href='controleur.php?action=cracker&&logi=$logi&&niv=$v' style='margin-left:25%;' class='btn btn-outline-success'>Cracker</a>
+                <a href='controleur.php?action=supprT&&logi=$logi&&niv=$v' style='margin-left:5%;' class='btn btn-outline-danger'>Supprimer</a></div>";
+            }
+    echo "</ul>";
+}
+
+  ////////////////////////////////////////////////////////////////////////////////////////////
+ ////////////////////////////// FONCTIONS DU SOUS MODULE VIRUS //////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////
+
+function virusUploade($ip, $id, $vir){
+
+}
+
+/**
+ * Fonction qui permet d'uploader un virus sur la machine d'un autre joueur
+ * Elle renvoie vraie si le joueur ne triche pas et faux sinon
+ * @param $idOrdi
+ * @param $idUser
+ * @param $vir
+ * @param $niv
+ * @return bool
+ */
+function uploadVirus($ip, $idUser, $vir, $niv){
+    $idOrdi = recupIDOrdiBDD($ip);
+
+    $logiciel = array(
+        "Miner" => "Generateur_de_Miner",
+        "Backdoor" => "Generateur_de_Backdoor"
+    );
+
+    if($niv == recupNiveaMat(recupIPLocal($idUser), $logiciel[$vir])){
+        $viruses = recupVirusUploade($idOrdi, $idUser);
+
+        foreach($viruses as $virus)
+            if($virus["Type_Virus"] === $vir)
+                retirerVirusBDD(recupVirusIDBDD($idOrdi, $idUser, $vir));
+
+        ajouterVirusBDD($idOrdi, $idUser, $vir, $niv);
+        return true;
+    }
+
+    return false;
+}
+
+function recupSommeGainVirus($idUser){
+    $miners = recupMinerUploade($idUser);
+    $sum = 0;
+    foreach($miners as $miner)
+        $sum += 5 * recupNiveaMat(recupIPDepuisID($miner["ID_Ordinateurs"]), "Processeur") * $miner["Niveau"];
+    return $sum;
+}
+
+function afficherVirus($ip, $idUser){
+    $logiciels = listerLogiciels(recupIPLocal($idUser));
+    $idOrdi = recupIDOrdiBDD($ip);
+
+    $dejaBD = false;
+    $dejaMI = false;
+    
+    $viruses = recupVirusUploade($idOrdi, $idUser);
+
+    foreach($viruses as $virus)
+        if($virus["Type_Virus"] === "Backdoor" && $virus["Niveau"] >= recupNiveaMat(recupIPLocal($idUser), "Generateur_de_Backdoor"))
+            $dejaBD = true;
+        elseif($virus["Type_Virus"] === "Miner" && $virus["Niveau"] >= recupNiveaMat(recupIPLocal($idUser), "Generateur_de_Miner"))
+            $dejaMI = true;
+
+    echo "<ul style='max-width:40%; margin-bottom:10%;'>";
+    foreach($logiciels[0] as $logiciel => $niveau){
+        if($logiciel === "Generateur_de_Miner")
+            $logiciel = "Miner";
+        elseif($logiciel === "Generateur_de_Backdoor")
+            $logiciel = "Backdoor";
+        
+        if(($logiciel === "Miner" && !$dejaMI) || ($logiciel === "Backdoor" && !$dejaBD)){
+            echo "<li class='row' style='font-size:1.1em;'><span class='col-md-6'>$logiciel</span><span class='col-md-6'>Niveau $niveau</span>";
+            echo "<div style='margin:20px auto 30px 55%;'><a href='controleur.php?action=upload&&vir=$logiciel&&niv=$niveau' class='btn btn-outline-danger'>Upload</a></div></li>";
+        }  
+    }
+    echo "</ul>";
+}

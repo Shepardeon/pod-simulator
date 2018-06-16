@@ -99,7 +99,6 @@ if($action = valider("action")){
                         rediriger("jeu.php?view=money");
                     }
                 }
-                rediriger("connexion.php");
         break;
 
         /* On vole des fonds à un autre joueur */
@@ -115,7 +114,6 @@ if($action = valider("action")){
                         rediriger("jeu.php?view=money");
                     }
                 }
-                rediriger("connexion.php");
         break;
         
         /* On achète un nouveau logiciel */
@@ -132,13 +130,14 @@ if($action = valider("action")){
                         rediriger("jeu.php?view=logiciels");
                     }
                 }
-                rediriger("connexion.php");
         break;
 
         /* On achète un nouveau materiel */
         case "acheterM":
                 if(($id = valider("id", "SESSION")) && ($mat = valider("mat")) && ($prix = valider("prix"))){
                     if(acheter($id, $prix)){
+                        if($mat === "Processeur")
+                            updateRevenusJoueur($id);
                         augmenterNiveau($mat, $id);
                         setNiveauJoueur($id);
                         enregistrerMessage("Vous avez acheter un nouveau <b>".str_replace("_", " ", $mat)."</b> pour <b>$prix I2C</b>.");
@@ -149,7 +148,6 @@ if($action = valider("action")){
                         rediriger("jeu.php?view=materiels");
                     }
                 }
-                rediriger("connexion.php");
         break;
         
         /* On scan le réseau en totalité */
@@ -158,7 +156,6 @@ if($action = valider("action")){
                     $_SESSION["nouveauScan"] = true;
                     rediriger("jeu.php?view=scanner");
                 }
-                rediriger("connexion.php");
         break;
 
         /* On scan un joueur en particulier */
@@ -177,11 +174,10 @@ if($action = valider("action")){
                         rediriger("jeu.php?view=scanner");
                     }
                 }
-                rediriger("connexion.php");
         break;
                 
         /* On lance une attaque sur un autre joueur */
-        case "attaquer": // TODO : changer le système d'attaque complètement
+        case "attaquer": // TODO : changer le système d'attaque complètement pour utiliser du temps
                 if(($id = valider("id", "SESSION")) && ($ip = valider("IP"))){
                     if(existsIP($ip)){
                         ajouterLogs($ip, "[ALERTE] - Connexion externe en provenance de " . valider("ip", "SESSION"));
@@ -194,7 +190,6 @@ if($action = valider("action")){
                         rediriger("jeu.php?view=attaque");
                     }
                 }
-                rediriger("connexion.php");
         break;
 
         /* On tente de se déconnecter de la machine d'un autre joueur */
@@ -205,14 +200,62 @@ if($action = valider("action")){
                     enregistrerMessage("Vous vous êtes bien connecté à la machine <b>$ip</b>");
                     rediriger("jeu.php?view=status");
                 }
-                rediriger("connexion.php");
         break;
         
         /* On tente de télécharger un logiciel depuis un autre ordinateur */
         case "telecharger":
                 if(($id = valider("id", "SESSION")) && ($logi = valider("logi"))){
-                    
+                    $ip = recupIPLocal($id);
+                    $niv = recupNiveaMat(valider("ip", "SESSION"), $logi);
+                    telechargerLogiciel($ip, $logi, $niv);
+                    enregistrerMessage("Vous avez transféré un <b>".str_replace("_", " ", $logi)."</b> de niveau $niv vers <b>$ip</b>");
+                    ajouterLogs(valider("ip", "SESSION"), "[INFO] - Transfert de ".str_replace("_", " ", $logi)." vers $ip");
+                    rediriger("jeu.php?view=status");
                 }
+        break;
+
+        /* On tente de supprimer un fichier téléchargé */
+        case "supprT":
+                if(($ip = valider("ip", "SESSION")) && ($logi = valider("logi")) && ($niv = valider("niv"))){
+                    supprimerLogiciel($ip, $logi, $niv);
+                    enregistrerMessage("Vous avez supprimé un <b>".str_replace("_", " ", $logi)."</b> de niveau $niv sur la machine <b>$ip</b>");
+                    rediriger("jeu.php?view=telechargement");
+                }
+        break;
+
+        /* On tente de cracker un logiciel téléchargé */
+        case "cracker":
+                if(($ip = valider("ip", "SESSION")) && ($logi = valider("logi")) && ($niv = valider("niv"))){
+                    // TODO : Ajouter un système de temps
+                    if(crackerLogiciel($ip, $logi, $niv)){
+                        enregistrerMessage("Vous avez cracké un <b>".str_replace("_", " ", $logi)."</b> de niveau $niv et l'avez intégré à la machine <b>$ip</b>");
+                        setNiveauJoueur(valider("id", "SESSION"));
+                        rediriger("jeu.php?view=telechargement");
+                    }else{
+                        enregistrerMessage("Le logiciel <b>".str_replace("_", " ", $logi)."</b> de niveau $niv n'existe pas sur la machine <b>$ip</b>", "danger");
+                        rediriger("jeu.php?view=telechargement");
+                    }
+                }
+        break;
+
+        /* On upload un virus sur la machine de quelqu'un */
+        case "upload":
+                if(($id = valider("id", "SESSION")) && ($ip = valider("ip", "SESSION")) && ($vir = valider("vir")) && ($niv = valider("niv"))){
+                    if(uploadVirus($ip, $id, $vir, $niv)){
+                        if($vir === "Miner")
+                            updateRevenusJoueur($id);
+                        enregistrerMessage("Vous avez installé un virus de type <b>$vir</b> sur la machine <b>$ip</b>");
+                        rediriger("jeu.php?view=telechargement");
+                    }
+                    else{
+                        enregistrerMessage("Ce virus n'est pas disponnible pour le moment.", "danger");
+                        rediriger("jeu.php?view=telechargement");
+                    }
+                }
+        break;
+
+        /* Comportement par défaut : On ne reste pas bloqué sur le contrôleur et on retourne vers la page de connexion (qui renvoie vers le jeu si l'utilisateur est connecté) */
+        default:
                 rediriger("connexion.php");
         break;
     }

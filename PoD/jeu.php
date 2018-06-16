@@ -55,9 +55,7 @@ if(!$view || !file_exists("templates/$view.php"))
                         <a href="jeu.php?view=status" class="btn btn-secondary <?php if($view == 'status') echo 'active' ?>">Status</a>
                         <a href="jeu.php?view=logs" class="btn btn-secondary <?php if($view == 'logs') echo 'active' ?>">Logs</a>
                         <a href="jeu.php?view=antivirus" class="btn btn-secondary <?php if($view == 'antivirus') echo 'active' ?>">Antivirus</a>
-                        <?php if(valider("ip", "SESSION") == recupIPLocal(valider("id", "SESSION"))) {?>
                         <a href="jeu.php?view=telechargement" class="btn btn-secondary <?php if($view == 'telechargement') echo 'active' ?>">Téléchargement</a>
-                        <?php } ?>
                         <a href="jeu.php?view=money" class="btn btn-secondary <?php if($view == 'money') echo 'active' ?>">Porte-feuille</a>
                         <?php if(valider("ip", "SESSION") != recupIPLocal(valider("id", "SESSION"))) 
                                 echo '<a href="controleur.php?action=stopAttaque" class="btn btn-secondary">Déconnexion</a>';

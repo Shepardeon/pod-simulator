@@ -164,6 +164,16 @@ function setFonds($id, $montant, $type="nsec"){
     SQLUpdate($SQL);
 }
 
+/**
+ * Fonction qui permet de définir en BDD combien gagne un joueur
+ * @param $id
+ * @param $revenus
+ */
+function setRevenusBDD($id, $revenus){
+    $SQL = "UPDATE joueurs SET Revenus = '$revenus' WHERE ID_Joueurs = '$id'";
+    SQLUpdate($SQL);
+}
+
   ////////////////////////////////////////////////////////////////////////////////////////////
  ////////////////////////////// FONCTIONS DU MODULE ORDINATEUR //////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////
@@ -200,6 +210,17 @@ function testIPUnique($ip){
  */
 function recupIPDepuisUtilisateur($idUser){
     $SQL = "SELECT IP FROM ordinateurs WHERE ID_Joueurs = '$idUser'";
+
+    return SQLGetChamp($SQL);
+}
+
+/**
+ * Fonction qui récupère en BDD l'IP de l'identifiant ordinateur passé en paramètre
+ * @param $idOrdi
+ * @return string
+ */
+function recupIPDepuisID($idOrdi){
+    $SQL = "SELECT IP FROM ordinateurs WHERE ID_Ordinateurs = '$idOrdi'";
 
     return SQLGetChamp($SQL);
 }
@@ -279,6 +300,17 @@ function recupNiveauMatBDD($ip, $col){
 }
 
 /**
+ * Fonction qui permet de définir le niveau d'un logiciel/materiel dans la BDD
+ * @param $ip
+ * @param $logi
+ * @param $niv
+ */
+function setNiveauMatBDD($ip, $logi, $niv){
+    $SQL = "UPDATE ordinateurs SET $logi = '$niv' WHERE IP = '$ip'";
+    SQLUpdate($SQL);
+}
+
+/**
  * Fonction qui permet de renvoyer jusqu'à X IP aléatoirement de la BDD à l'exception de celle passée en paramètre
  * @param $ip
  * @param $limit
@@ -305,17 +337,127 @@ function recupIDOrdiBDD($ip){
 
 /**
  * Fonction qui enregistre un nouveau téléchargement en BDD
+ * @param $idOrdi
+ * @param $logi
+ * @param $niv
+ * @return int
  */
 function ajoutTelechargementBDD($idOrdi, $logi, $niv){
-    $SQL = "INSERT INTO ordinateurs(ID_Ordinateurs, Logiciel, Niveau) VALUES ('$idOrdi', '$logi', '$niv'";
+    $SQL = "INSERT INTO telechargements(ID_Ordinateurs, Logiciel, Niveau) VALUES ('$idOrdi', '$logi', '$niv')";
     return SQLInsert($SQL);
 }
-/*
+
+/**
+ * Fonction qui permet de récupérer les téléchargements d'un ordinateur spécifique
+ * @param $idOrdi
+ * @return array
+ */
+function recupTelechargementsBDD($idOrdi){
+    $SQL = "SELECT Logiciel, Niveau FROM telechargements WHERE ID_Ordinateurs = '$idOrdi'";
+    return parcoursRs(SQLSelect($SQL));
+}
+
+/**
+ * Fonction qui permet de savoir si un logiciel a été téléchargé et renvoie son niveau
+ * @param $idOrdi
+ * @param $logi
+ * @return int
+ */
+function recupLogiTelechargeBDD($idOrdi, $logi){
+    $SQL = "SELECT Niveau FROM telechargements WHERE ID_Ordinateurs = '$idOrdi' AND Logiciel = '$logi'";
+    return SQLGetChamp($SQL);
+}
+
+/**
+ * Fonction qui permet de retirer un téléchargement de la BDD
+ * @param $idOrdi
+ * @param $logi
+ * @param $niv
+ */
 function retirerTelechargementBDD($idOrdi, $logi, $niv){
-    $SQL = "DELETE FROM"
-}*/
+    $SQL = "DELETE FROM telechargements WHERE ID_Ordinateurs = '$idOrdi' AND Logiciel = '$logi' AND Niveau = '$niv'";
+    SQLDelete($SQL);
+}
 
+/********************************************************************************************
+ *                      Les fonctions du sous module virus                                  *
+ *******************************************************************************************/
 
-  ///////////////////////////////////////////////////////////////////////////////////////
- ////////////////////////////// FONCTIONS DU MODULE VIRUS //////////////////////////////
-///////////////////////////////////////////////////////////////////////////////////////
+/**
+ * Fonction qui permet d'ajouter un virus en BDD
+ * @param $idOrdi
+ * @param $idUser
+ * @param $vir
+ * @param $niv
+ * @return int
+ */
+function ajouterVirusBDD($idOrdi, $idUser, $vir, $niv){
+    $SQL = "INSERT INTO virus(ID_Ordinateurs, ID_Joueurs, Type_Virus, Niveau) VALUES ('$idOrdi', '$idUser', '$vir', '$niv')";
+    return SQLInsert($SQL);
+}
+
+/**
+ * Fonction qui permet de récupérer la liste des virus sur un ordinateur
+ * @param $idOrdi
+ * @return array
+ */
+function recupVirusBDD($idOrdi){
+    $SQL = "SELECT ID_Virus, Type_Virus, Niveau FROM virus WHERE ID_Ordinateurs = '$idOrdi'";
+    return parcoursRs(SQLSelect($SQL));
+}
+
+/**
+ * Fonction qui renvoie la liste des Miners appartenant à un joueur particulier
+ * @param $idUser
+ * @return array
+ */
+function recupMinerUploade($idUser){
+    $SQL = "SELECT ID_Ordinateurs, Niveau FROM virus WHERE ID_Joueurs = '15' AND Type_Virus = 'Miner'";
+    return parcoursRs(SQLSelect($SQL));
+}
+
+/**
+ * Fonction qui renvoie la liste des virus sur un ordinateur appartenant à un joueur particulier
+ * @param $idOrdi
+ * @param $idUser
+ * @return array
+ */
+function recupVirusUploade($idOrdi, $idUser){
+    $SQL = "SELECT Type_Virus, Niveau FROM virus WHERE ID_Ordinateurs = '$idOrdi' AND ID_Joueurs = '$idUser'";
+    return parcoursRs(SQLSelect($SQL));
+}
+
+/**
+ * Fonction qui permet de récupérer l'identifiant en BDD d'un virus
+ * @param $idOrdi
+ * @param $idUser
+ * @param $vir
+ * @param $niv
+ * @return int
+ */
+function recupVirusIDBDD($idOrdi, $idUser, $vir){
+    $SQL = "SELECT ID_Virus FROM virus WHERE ID_Ordinateurs = '$idOrdi' AND ID_Joueurs = '$idUser' AND Type_Virus = '$vir'";
+    return SQLGetChamp($SQL);
+}
+
+/**
+ * Fonction qui vérifie si un virus existe en BDD
+ * @param $idVirus
+ * @return bool
+ */
+function virusExistsBDD($idVirus){
+    $SQL = "SELECT 1 FROM virus WHERE ID_Virus = '$idVirus'";
+    
+    if(SQLGetChamp($SQL))
+        return true;
+    return false;
+}
+
+/**
+ * Fonction qui permet de retirer un virus de la BDD
+ * @param $idVirus
+ */
+function retirerVirusBDD($idVirus){
+    $SQL = "DELETE FROM virus WHERE ID_Virus = '$idVirus'";
+    SQLDelete($SQL);
+}

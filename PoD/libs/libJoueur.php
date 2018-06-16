@@ -184,6 +184,16 @@ function setNiveauJoueur($id){
     setNiveauJoueurBDD($id, recupNiveauJoueur($id));
 }
 
+function updateRevenusJoueur($id){
+    echo 10 * recupNiveaMat(recupIPLocal($id), "Processeur");
+    echo "<br>";
+    echo recupSommeGainVirus($id);
+    $revenus = 10 * recupNiveaMat(recupIPLocal($id), "Processeur") + recupSommeGainVirus($id);
+    echo "<br>";
+    echo $revenus;
+    setRevenusBDD($id, $revenus);
+}
+
 /**
  * Fonction qui affiche les fonds d'un joueur
  * @param $id 
