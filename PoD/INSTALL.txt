@@ -1,0 +1,57 @@
+﻿+=======================================================================================================================================+
+|         _______  _______  ______              _______ _________ _______           _        _______ _________ _______  _______         |
+|        (  ____ )(  __   )(  __  \            (  ____ \\__   __/(       )|\     /|( \      (  ___  )\__   __/(  ___  )(  ____ )        |
+|        | (    )|| (  )  || (  \  )           | (    \/   ) (   | () () || )   ( || (      | (   ) |   ) (   | (   ) || (    )|        |
+|        | (____)|| | /   || |   ) |   _____   | (_____    | |   | || || || |   | || |      | (___) |   | |   | |   | || (____)|        |
+|        |  _____)| (/ /) || |   | |  (_____)  (_____  )   | |   | |(_)| || |   | || |      |  ___  |   | |   | |   | ||     __)        |
+|        | (      |   / | || |   ) |                 ) |   | |   | |   | || |   | || |      | (   ) |   | |   | |   | || (\ (           |
+|        | )      |  (__) || (__/  )           /\____) |___) (___| )   ( || (___) || (____/\| )   ( |   | |   | (___) || ) \ \__        |
+|        |/       (_______)(______/            \_______)\_______/|/     \|(_______)(_______/|/     \|   )_(   (_______)|/   \__/        |
+|                                                                                                                                v1.0a  |
++=======================================================================================================================================+
+
+    Les pré-requis (optionnels)
+    ---------------------------
+
+Pour une utilisation optimale de l'application, il est nécessaire d'avoir sur sa machine un serveur SMTP. Ainsi qu'un cronjob qui appel 
+toutes les heures le script "paye.php" situé dans "cronjob/".
+Afin de faire fonctionner ce cronjob, il suffit de créer le script suivant dans "/etc/cron.hourly" :
+
+#!/bin/bash
+php /chemin/vers/cronjob/paye.php
+
+    Installation
+    ------------
+
+a - Installation de l'application
+Pour utiliser l'application, il vous faut vous assurer de posséder un interprêteur PHP 7.0 au minimum ainsi qu'une base de donnée MySQL. 
+Puis placer le dossier "POD" à la racine de votre site (ou à tout autre endroit désiré) et éditer le fichier "config.php" dans "libs/".
+
+b - Installation de la base de données
+Il est possible d'installer la base de données de deux façon : avec le script bdd.sql qui permet de créer une base de données vierge
+ou avec le script bdd-demo.sql qui vient avec des données pré-rentrées afin d'effectuer des tests.
+
+    Utilisation
+    -----------
+
+a - Liste des comptes par défaut de bdd-demo
+Utilisateur:MotDePasse
+  +  Joueur1:123
+  +  Joueur2:123
+  +  Joueur3:123
+  +  Joueur4:123
+  +  Joueur5:123
+  +  Joueur6:123
+
+b - Création d'un nouveau compte
+Chaque compte doit posséder un pseudo ET une adresse e-mail unique.
+Une fois un compte créé il faut le valider afin de pouvoir l'utiliser. Pour ce faire, le site envoie automatiquement un mail contenant un lien
+d'activation. (d'où la nécessité d'un serveur SMTP configuré). Il est cependant possible de valider manuellement le compte utilisateut :
+
+lien d'activation type : localhost/PoD/controleur.php?action=valider&id=X&chaine=Y où X et Y représentent respectivement l'identifian et 
+une chaine de caractère associée à un utilisateur et retrouvables dans la table "joueurs" de "bdd_pod" dans les colones "ID_Joueurs" et 
+"Chaine_Validation".
+
+exemple de lien : localhost/PoD/controleur.php?action=valider&id=24&chaine=MYpGvufyNx
+
+/!\ Ne pas passer par le controleur pour valider le compte d'un utilisateur entraînera des bugs car ce dernier ne possèdera pas d'ordinateur

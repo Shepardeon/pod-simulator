@@ -306,10 +306,6 @@ function afficherTelechargements($ip){
  ////////////////////////////// FONCTIONS DU SOUS MODULE VIRUS //////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////
 
-function virusUploade($ip, $id, $vir){
-
-}
-
 /**
  * Fonction qui permet d'uploader un virus sur la machine d'un autre joueur
  * Elle renvoie vraie si le joueur ne triche pas et faux sinon
@@ -341,14 +337,69 @@ function uploadVirus($ip, $idUser, $vir, $niv){
     return false;
 }
 
+function supprimerVirus($idVir){
+    if(virusExistsBDD($idVir)){
+        retirerVirusBDD($idVir);
+        return true;
+    }
+
+    return false;
+}
+
+/**
+ * Fonction qui permet de calculer la somme des gains d'un joueur
+ * @param $idUser
+ * @return int
+ */
 function recupSommeGainVirus($idUser){
-    $miners = recupMinerUploade($idUser);
+    $miners = recupVirusUploadeUser($idUser);
     $sum = 0;
     foreach($miners as $miner)
         $sum += 5 * recupNiveaMat(recupIPDepuisID($miner["ID_Ordinateurs"]), "Processeur") * $miner["Niveau"];
     return $sum;
 }
 
+/**
+ * Fonction qui affiche la base de donnée des virus actifs d'un joueur
+ */
+function afficherBDD($idUser){
+    $viruses = recupVirusUploadeUser($idUser, "");
+
+    echo "<ul style='padding:20px 0 0 0;'>";
+    foreach($viruses as $virus){
+        $ip = recupIPDepuisID($virus["ID_Ordinateurs"]);
+
+        if($virus["Type_Virus"] === "Miner")
+            echo "<li class='row' style='font-size:1.1em; padding-bottom:15px; margin-left:10%;'>$ip::".$virus["Type_Virus"]."</li>";
+        else{
+            echo "<li class='row' style='font-size:1.1em; margin-left:10%;'>$ip::".$virus["Type_Virus"];
+            echo "<div style='margin:-5px auto 15px auto;'><a href='controleur.php?action=attaquer&&IP=$ip' class='btn btn-outline-success'>Connexion</a></div>";
+            echo "</li>";
+        }
+    }
+    echo "</ul>";
+}
+
+function afficherVirusSurMachine($ip){
+    $idOrdi = recupIDOrdiBDD($ip);
+    $viruses = recupVirusBDD($idOrdi);
+    $nivAV = recupNiveaMat($ip, "Anti_Virus");
+
+    echo "<ul>";
+    foreach($viruses as $virus){
+        if($nivAV >= $virus["Niveau"]){
+            echo "<li class='row' style='font-size:1.1em;'>".recupRandomVirName($virus["Type_Virus"])." ----> ".$virus["Type_Virus"]." niveau ".$virus["Niveau"]."</li>";
+            echo "<div class='text-right' style='padding:15px;'><a href='controleur.php?action=supprimerAV&&vir=".$virus["ID_Virus"]."&&prop=".$virus["ID_Joueurs"]."&&type=".$virus["Type_Virus"]."' class='btn btn-outline-danger'>Supprimer</a></div>";
+        }
+    }
+    echo "</ul>";
+}
+
+/**
+ * Fonction qui gère l'affichage des virus disponnibles sur une machine adverse pour un joueur
+ * @param $ip
+ * @param $idUser
+ */
 function afficherVirus($ip, $idUser){
     $logiciels = listerLogiciels(recupIPLocal($idUser));
     $idOrdi = recupIDOrdiBDD($ip);

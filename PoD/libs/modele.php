@@ -99,7 +99,12 @@ function listerUtilisateurs($limite=50, $ordre="ASC"){
         $SQL .= " DESC";
     $SQL .= " LIMIT $limite";
 
-    return parcoursRS(SQLSelect($SQL));
+    return parcoursRs(SQLSelect($SQL));
+}
+
+function recupListeJoueurs(){
+    $SQL = "SELECT ID_Joueurs FROM joueurs WHERE Valide = 1";
+    return parcoursRs(SQLSelect($SQL));
 }
 
 /**
@@ -129,6 +134,16 @@ function recupFondsSec($idUser){
  */
 function recupFondsTotaux($idUser){
     $SQL = "SELECT Fonds + Fonds_Securise FROM joueurs WHERE ID_Joueurs = '$idUser'";
+    return SQLGetChamp($SQL);
+}
+
+/**
+ * Fonction qui permet de récupérer les revenus actuels d'un joueur
+ * @param $idUser
+ * @return int
+ */
+function recupRevenusJoueur($idUser){
+    $SQL = "SELECT Revenus FROM joueurs WHERE ID_Joueurs = '$idUser'";
     return SQLGetChamp($SQL);
 }
 
@@ -402,17 +417,23 @@ function ajouterVirusBDD($idOrdi, $idUser, $vir, $niv){
  * @return array
  */
 function recupVirusBDD($idOrdi){
-    $SQL = "SELECT ID_Virus, Type_Virus, Niveau FROM virus WHERE ID_Ordinateurs = '$idOrdi'";
+    $SQL = "SELECT ID_Virus, ID_Joueurs, Type_Virus, Niveau FROM virus WHERE ID_Ordinateurs = '$idOrdi'";
     return parcoursRs(SQLSelect($SQL));
 }
 
 /**
- * Fonction qui renvoie la liste des Miners appartenant à un joueur particulier
+ * Fonction qui renvoie la liste des virus appartenant à un joueur particulier
  * @param $idUser
+ * @param string $type
  * @return array
  */
-function recupMinerUploade($idUser){
-    $SQL = "SELECT ID_Ordinateurs, Niveau FROM virus WHERE ID_Joueurs = '15' AND Type_Virus = 'Miner'";
+function recupVirusUploadeUser($idUser, $type="Miner"){
+    if(isset($type) && $type !== "")
+        $SQL = "SELECT ID_Ordinateurs, Niveau FROM virus WHERE ID_Joueurs = '$idUser' AND Type_Virus = '$type'";
+    else
+        $SQL = "SELECT Type_Virus, ID_Ordinateurs, Niveau FROM virus WHERE ID_Joueurs = '$idUser'";
+    $SQL .= " ORDER BY ID_Ordinateurs"; 
+
     return parcoursRs(SQLSelect($SQL));
 }
 

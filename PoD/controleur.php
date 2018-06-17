@@ -35,7 +35,7 @@ if($action = valider("action")){
                         }
                         else{
                             enregistrerMessage("Votre compte est déjà validé.", "danger");
-                            rediriger("inscription.php");
+                            rediriger("connexion.php");
                         }
                     }
                 }
@@ -175,6 +175,14 @@ if($action = valider("action")){
                     }
                 }
         break;
+
+        /* On scan avec l'antivirus */
+        case "scanAV":
+                if($id = valider("id", "SESSION")){
+                    $_SESSION["nouveauScan"] = true;
+                    rediriger("jeu.php?view=antivirus");
+                }
+        break;
                 
         /* On lance une attaque sur un autre joueur */
         case "attaquer": // TODO : changer le système d'attaque complètement pour utiliser du temps
@@ -223,6 +231,22 @@ if($action = valider("action")){
                 }
         break;
 
+        /* On tente de supprimer un virus sur notre machine */
+        case "supprimerAV":
+                if(($vir = valider("vir")) && ($prop = valider("prop")) && ($type = valider("type"))){
+                    if(supprimerVirus($vir)){
+                        $_SESSION["nouveauScan"] = true; // Pour ne pas devoir relancer un scan à chaque fois
+                        updateRevenusJoueur($prop);
+                        enregistrerMessage("Vous avez supprimé un <b>$type</b> de votre machine");
+                        rediriger("jeu.php?view=antivirus");
+                    }
+                    else{
+                        enregistrerMessage("Ce virus n'existe pas.", "danger");
+                        rediriger("jeu.php?view=antivirus");
+                    }
+                }
+        break;
+
         /* On tente de cracker un logiciel téléchargé */
         case "cracker":
                 if(($ip = valider("ip", "SESSION")) && ($logi = valider("logi")) && ($niv = valider("niv"))){
@@ -253,10 +277,18 @@ if($action = valider("action")){
                     }
                 }
         break;
+        
+        /* Cas utilitaire pour tester le fonctionnement de la paie SANS cronjob */
+        case "debugJDP": // TODO : enlever avant une utilisation finale
+                jourDePaie();
+        break;
 
         /* Comportement par défaut : On ne reste pas bloqué sur le contrôleur et on retourne vers la page de connexion (qui renvoie vers le jeu si l'utilisateur est connecté) */
         default:
                 rediriger("connexion.php");
         break;
     }
+}
+else{ // Si on n'a pas d'action, on redirige le joueur
+    rediriger("connexion.php");
 }

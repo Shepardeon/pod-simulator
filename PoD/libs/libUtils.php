@@ -6,6 +6,7 @@
  */
 
 include_once("modele.php");
+include_once("libJoueur.php");
 
 /**
  * Cette fonction permet de valider une chaine en vérifiant qu'elle est bien définie et non nulle.
@@ -193,4 +194,53 @@ function afficherClassement($nb){
         $rank++;
     }
     echo "</ul>";
+}
+
+/**
+ * Fonction qui renvoie un nom de virus aléatoirement en fonction de son type
+ * @param $type
+ * @return string
+ */
+function recupRandomVirName($type){
+    $minerNames = array(
+        "Gen:Miner",
+        "Win64::Miner",
+        "MALV-I2CM",
+        "Virus.Gen.Miner",
+        "Win32/Mining",
+        "generic.malv-min",
+        "Linux.coinminer",
+        "Trojan:Script-Miner"
+    );
+
+    $bdoorNames = array(
+        "Win32/Malware-gen",
+        "Trojan::Backdoor",
+        "MALV-BD",
+        "Virus.Malv.Bdoor",
+        "generic.backdoor",
+        "Linux.remoteaccess",
+        "Win64::RemoteAccess-Malv",
+        "PUA.HackTool.RAT"
+    );
+
+    if($type === "Miner")
+        return $minerNames[array_rand($minerNames)];
+    else
+        return $bdoorNames[array_rand($bdoorNames)];
+}
+
+/**
+ * Fonction qui permet à tous les joueurs de gagner leurs revenus
+ */
+function jourDePaie(){
+    $joueurs = recupListeJoueurs();
+
+    echo "<pre>";
+    foreach($joueurs as $joueur){
+        $id = $joueur["ID_Joueurs"];
+        updateRevenusJoueur($id);
+        setFonds($id, recupFonds($id) + recupRevenusJoueur($id));
+    }
+    echo "</pre>";
 }
